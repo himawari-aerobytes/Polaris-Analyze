@@ -2,6 +2,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.IOException;
 
+//アノテーションでcsvの順序とキー名を対応させています
 @JsonPropertyOrder({
         "登録日時",
         "形態",
@@ -67,6 +68,7 @@ public class Message {
 
     }
 
+    //以下，自動生成
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }

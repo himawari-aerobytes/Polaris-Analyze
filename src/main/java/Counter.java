@@ -6,6 +6,10 @@ public class Counter {
     private Map<String,Integer> receive = new HashMap<String,Integer>();
     private Map<String,Integer> read = new HashMap<String,Integer>();
 
+    /**
+     * @constructor
+     * カテゴリのカウントを0で初期化します
+     */
     public Counter(){
         for(String CATEGORY : CATEGORIES){
             this.receive.put(CATEGORY,0);
@@ -16,6 +20,10 @@ public class Counter {
         }
     }
 
+    /**
+     * 全カテゴリ合計の受信数です．
+     * @return 全受信数
+     */
     public int getAllReceived(){
         int allReceived=0;
         for(String CATEGORY : CATEGORIES){
@@ -25,6 +33,10 @@ public class Counter {
         return allReceived;
     }
 
+    /**
+     * 全カテゴリ合計の既読数です．
+     * @return 全既読数
+     */
     public int getAllRead(){
         int allRead=0;
         for(String CATEGORY : CATEGORIES){
@@ -34,6 +46,10 @@ public class Counter {
         return allRead;
     }
 
+    /**
+     * 受信数を追加します
+     * @param messageType
+     */
     public void addReceive(String messageType)
     {
         int receive = this.receive.get(messageType);
@@ -41,11 +57,20 @@ public class Counter {
 
     }
 
+    /**
+     * 既読数を追加します
+     * @param messageType
+     */
     public void addRead(String messageType){
         int read = this.receive.get(messageType);
         this.read.replace(messageType,++read);
     }
 
+    /**
+     *
+     * @param messageType
+     * @return 百分率が計算可能かどうか
+     */
     public boolean canCalcPercentage(String messageType){
 
         if(this.receive.get(messageType) != 0){

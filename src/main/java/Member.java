@@ -21,6 +21,12 @@ public class Member {
         return counter;
     }
 
+    /**
+     * 研究室メンバーをセットします
+     * @param name 名前
+     * @param number t_device_mng_id
+     * @param grade 学年(統一されていれば何でもoK)
+     */
     public Member(String name, String number, String grade){
         this.name = name;
         this.grade = grade;

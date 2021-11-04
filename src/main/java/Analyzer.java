@@ -25,14 +25,23 @@ public class Analyzer {
     }
 
     public static void main(String args[]) throws IOException {
+        //解析期間を指定．
         final Calendar START_DATE = parseCalendar("2021-10-1 00:00:00");
         final Calendar END_DATE = parseCalendar("2021-10-31 23:59:59");
         final String PolarisJSON = CSVProcessor.ReadCSV("source.csv");
+
+        //jsonファイルを直接読むときはコメントアウト解除
         //final File PolarisJSON = new File("source.json");
 
 
         List<Member> TMPmembers = new ArrayList<>();
 
+        /**
+         * 研究室メンバーの追加
+         * 名前･番号(t_device_mng_id)･学年
+         * jsonfileの既読状態のt_device_mng_idを参照してidを確認してください．
+         * ここの番号付与アルゴリズムは変更になるかもしれません．
+         */
         TMPmembers.add(new Member("小堺", "135", "M2"));
         TMPmembers.add(new Member("中井", "134", "M2"));
         TMPmembers.add(new Member("NP中島", "136", "B4"));
@@ -55,11 +64,11 @@ public class Analyzer {
         TMPmembers.add(new Member("三田", "155", "B3"));
 
 
+        //研究室全体をクラス化しました．
         final Lab wadaLab = new Lab(TMPmembers.toArray(new Member[TMPmembers.size()]));
         final ObjectMapper mapper = new ObjectMapper();
 
-
-
+        //csvからJSONに変換されたものが入っています．
         List<Map<String, Object>> polarisJSON = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {
         });
 
