@@ -27,8 +27,8 @@ public class Analyzer {
     public static void main(String args***REMOVED******REMOVED***) throws IOException {
         final Calendar START_DATE = parseCalendar("2021-10-1 00:00:00");
         final Calendar END_DATE = parseCalendar("2021-10-31 23:59:59");
-
-        final File file = new File("source.json");
+        final String PolarisJSON = CSVProcessor.ReadCSV("source.csv");
+        //final File PolarisJSON = new File("source.json");
 
 
         List<Member> TMPmembers = new ArrayList<>();
@@ -58,7 +58,9 @@ public class Analyzer {
         final Lab wadaLab = new Lab(TMPmembers.toArray(new Member***REMOVED***TMPmembers.size()***REMOVED***));
         final ObjectMapper mapper = new ObjectMapper();
 
-        List<Map<String, Object>> polarisJSON = mapper.readValue(file, new TypeReference<List<Map<String, Object>>>() {
+
+
+        List<Map<String, Object>> polarisJSON = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {
       ***REMOVED***);
 
         /**
@@ -66,8 +68,7 @@ public class Analyzer {
          */
         for (Map<String, Object> msg : polarisJSON) {
             final Calendar createdDate = parseCalendar((String) msg.get("登録日時"));
-            final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, Object>>>() {
-          ***REMOVED***);
+            final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, Object>>>(){});
             final String messageType = (String) msg.get("形態");
 
 
