@@ -9,7 +9,9 @@ import java.io.*;
 import java.rmi.server.ExportException;
 import java.util.List;
 
-
+/**
+ * CSVをJSONに変換します
+ */
 public class CSVProcessor {
     public static String ReadCSV(String _path) throws IOException{
         final ObjectMapper objectMapper = new ObjectMapper();

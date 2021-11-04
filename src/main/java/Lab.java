@@ -1,8 +1,17 @@
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 研究室全メンバー
+ * 学年ごとの統計を出します
+ */
 public class Lab {
     private Map<String,Member> members = new HashMap<String,Member>();
+
+    /**
+     *
+     * @param members 研究室全メンバーの配列
+     */
     public Lab(Member***REMOVED******REMOVED*** members){
         for(Member member: members){
             this.members.put(member.getNumber(),member);
