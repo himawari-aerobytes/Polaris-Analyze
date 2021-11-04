@@ -6,12 +6,7 @@ public class Counter {
     private Map<String,Integer> receive = new HashMap<String,Integer>();
     private Map<String,Integer> read = new HashMap<String,Integer>();
 
-    public String***REMOVED******REMOVED*** getCATEGORIES() {
-        return CATEGORIES;
-  ***REMOVED***
-
     public Counter(){
-        System.out.println("Counter--Constructor");
         for(String CATEGORY : CATEGORIES){
             this.receive.put(CATEGORY,0);
       ***REMOVED***
@@ -21,12 +16,12 @@ public class Counter {
       ***REMOVED***
   ***REMOVED***
 
-
     public int getAllReceived(){
         int allReceived=0;
         for(String CATEGORY : CATEGORIES){
             allReceived += this.receive.get(CATEGORY);
       ***REMOVED***
+
         return allReceived;
   ***REMOVED***
 
@@ -35,6 +30,7 @@ public class Counter {
         for(String CATEGORY : CATEGORIES){
             allRead += this.read.get(CATEGORY);
       ***REMOVED***
+
         return allRead;
   ***REMOVED***
 
