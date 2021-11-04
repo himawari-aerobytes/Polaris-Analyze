@@ -12,23 +12,17 @@ public class Lab {
     public double calcGradePercentage(String grade){
         int allRead = 0;
         int allReceive = 0;
-        int i;
 
-        for(Member member: members){
-            for(i=0;i<member.getCounter().getMaxIndex();i++){
-                if(grade.equals(member.getGrade())){
-                    allReceive += member.getCounter().getAllReceived();
-                    allRead += member.getCounter().getAllRead();
-                }
-                member.getCounter().setIndex(i+1);
+        for(Member member : members){
+            if(grade.equals(member.getGrade())){
+                allReceive += member.getCounter().getAllReceived();
+                allRead += member.getCounter().getAllRead();
             }
-            member.getCounter().setIndex(0);
         }
 
-        System.out.println(grade +"|" +allReceive+"|" + allRead);
-
-        return (double) allRead / allReceive;
-
+        int percentage =(int) ((double) allRead / allReceive*100);
+        System.out.println(grade + "|"+allRead+"|"+allReceive);
+        return (double) percentage / 100 ;
     }
 
 

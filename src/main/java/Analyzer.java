@@ -68,6 +68,7 @@ public class Analyzer {
             final Calendar createdDate = parseCalendar((String) msg.get("登録日時"));
             final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, Object>>>() {
             });
+            final String messageType = (String) msg.get("形態");
 
 
             /**
@@ -77,13 +78,12 @@ public class Analyzer {
              * 0 : a == b
              * 1 : a > b
              */
-            if (!(createdDate.compareTo(START_DATE) >= 0)) {
+            if (!((createdDate.compareTo(START_DATE) >= 0) && (createdDate.compareTo(END_DATE)<=0 ))) {
+                System.out.println(createdDate.getTime() +" is Skipped");
                 continue;
             }
 
-            if (!(createdDate.compareTo(END_DATE) <= 0)) {
-                continue;
-            }
+            System.out.println(msg.get("ヘッドライン"));
 
             /**
              * メッセージ既読のJSONデータ処理
@@ -91,16 +91,16 @@ public class Analyzer {
             for (Map<String, String> reader : readers) {
                 final String sender = (String) msg.get("sender");
                 final String readCondition = reader.get("status_name");
-                final String messageType = (String) msg.get("形態");
+
+
 
                 //自分自身を既読を除外
-                if (sender.equals(reader.get("user_notes"))) {
+                if (sender.contains(reader.get("user_notes"))) {
                     continue;
                 }
 
-
                 if (readCondition.equals("既読")) {
-
+                    System.out.println("既読 -- " + reader.get("user_notes"));
                     final Calendar readDate = parseCalendar(reader.get("response_result_created"));
 
                     /**
@@ -110,33 +110,25 @@ public class Analyzer {
                      * 0 : a == b
                      * 1 : a > b
                      */
-                    if (!(readDate.compareTo(START_DATE) >= 0)) {
-                        continue;
-                    }
-
-                    if (!(readDate.compareTo(END_DATE) <= 0)) {
+                    if (!(readDate.compareTo(START_DATE) >= 0 ) && ( readDate.compareTo(END_DATE) <= 0 )) {
                         continue;
                     }
 
                     members.stream()
                             .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
                             .forEach(x -> {
-
-                                final int index = x.getCounter().classNameToIndex(messageType);
-                                x.getCounter().setIndex(index);
-                                x.getCounter().addRead();
-                                x.getCounter().addReceive();
+                                x.getCounter().addRead(messageType);
+                                x.getCounter().addReceive(messageType);
                             });
                 }
 
                 if (readCondition.equals("未読")) {
+                    System.out.println("未読 -- "+ reader.get("user_notes"));
                     members.stream()
                             .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()) )
-                            .forEach(x -> {
-                                final int index = x.getCounter().classNameToIndex(messageType);
-                                x.getCounter().setIndex(index);
-                                x.getCounter().addReceive();
-                            });
+                            .forEach(x ->
+                                x.getCounter().addReceive(messageType)
+                            );
                 }
             }
         }

@@ -1,100 +1,79 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Counter {
-    private final List<String> CATEGORIES = new ArrayList<>(Arrays.asList("ゼミ入退室連絡", "ゼミ緊急", "GR連絡", "一般", "資料作成連絡", "GR緊急", "共通連絡", "共通緊急"));
-    private int[] receive = new int[CATEGORIES.size()];
-    private int[] read = new int[CATEGORIES.size()];
-    private int index = 0;
-    public final int MaxIndex = CATEGORIES.size();
+    private final String[] CATEGORIES = {"ゼミ入退室連絡", "ゼミ緊急", "GR連絡", "一般", "資料作成連絡", "GR緊急", "共通連絡", "共通緊急"};
+    private Map<String,Integer> receive = new HashMap<String,Integer>();
+    private Map<String,Integer> read = new HashMap<String,Integer>();
 
-    public int classNameToIndex(String className){
-        return CATEGORIES.indexOf(className);
+    public String[] getCATEGORIES() {
+        return CATEGORIES;
     }
 
-    public int getMaxIndex(){
-        return this.MaxIndex;
-    }
-
-    public int getAllReceived(){
-        int allReceive = 0;
-
-        for(int receive : this.receive){
-            allReceive+=receive;
+    public Counter(){
+        System.out.println("Counter--Constructor");
+        for(String CATEGORY : CATEGORIES){
+            this.receive.put(CATEGORY,0);
         }
 
-        return allReceive;
+        for(String CATEGORY : CATEGORIES){
+            this.read.put(CATEGORY,0);
+        }
+    }
 
+
+    public int getAllReceived(){
+        int allReceived=0;
+        for(String CATEGORY : CATEGORIES){
+            allReceived += this.receive.get(CATEGORY);
+        }
+        return allReceived;
     }
 
     public int getAllRead(){
-        int allRead = 0;
-        for(int read : this.read){
-            allRead += read;
+        int allRead=0;
+        for(String CATEGORY : CATEGORIES){
+            allRead += this.read.get(CATEGORY);
         }
         return allRead;
-
-    }
-    public void Counter(){
-        this.index = 0;
-        this.receive = new int[CATEGORIES.size()];
-        this.read = new int[CATEGORIES.size()];
     }
 
-    public int getIndex(){
-        return this.index;
+    public void addReceive(String messageType)
+    {
+        int receive = this.receive.get(messageType);
+        this.receive.replace(messageType,++receive);
+
     }
 
-    public void setIndex(int index){
-        if(index < 0 && CATEGORIES.size() <= index ){
-            throw new ArrayIndexOutOfBoundsException("indexがcategoriesの配列の範囲を指定していません．");
-        }
-        this.index = index;
+    public void addRead(String messageType){
+        int read = this.receive.get(messageType);
+        this.read.replace(messageType,++read);
     }
 
-    public void setIndex(String className){
-        this.index = CATEGORIES.indexOf(className);
-    }
+    public boolean canCalcPercentage(String messageType){
 
-    public void addReceive(){
-        this.receive[this.index]++;
-    }
-
-    public void addRead(){
-        this.read[this.index]++;
-    }
-
-    public boolean canCalcPercentage(){
-        if(this.receive[this.index] != 0){
-            return true;
-        }
-        return false;
-    }
-    private boolean canCalcPercentage(int index){
-        if(this.receive[index] != 0){
+        if(this.receive.get(messageType) != 0){
             return true;
         }
         return false;
     }
 
-    public double calcPercentage(){
-        if(!canCalcPercentage()){
-            throw new ArithmeticException(CATEGORIES.get(this.index)+"の受信は１つもありませんでした");
+    public double calcPercentage(String messageType){
+        if(!canCalcPercentage(messageType)){
+            throw new ArithmeticException(messageType + "の受信は１つもありませんでした");
         }
-        return (double) this.read[this.index] / this.receive[this.index];
+
+        return (double) this.read.get(messageType) / this.receive.get(messageType);
     }
 
     public double calcAllPercentage(){
-        int i;
         int receive = 0;
         int read = 0;
 
-        for(i=0;i<CATEGORIES.size();i++){
-            receive += this.receive[i];
-            read += this.read[i];
+        for(String CATEGORY : CATEGORIES){
+            read += this.read.get(CATEGORY);
+            receive += this.receive.get(CATEGORY);
         }
-
 
         if(0==receive){
             return -1;
