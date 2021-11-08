@@ -1,7 +1,6 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +34,6 @@ public class Analyzer {
         //jsonファイルを直接読むときはコメントアウト解除
         //final File PolarisJSON = new File(args***REMOVED***0***REMOVED***);
 
-
         List<Member> members = new ArrayList<>();
 
         /**
@@ -64,7 +62,6 @@ public class Analyzer {
         members.add(new Member("夏目", "153", "B3"));
         members.add(new Member("長谷川", "154", "B3"));
         members.add(new Member("三田", "155", "B3"));
-
 
         //研究室全体をクラス化．
         final Lab wadaLab = new Lab(members.toArray(new Member***REMOVED***members.size()***REMOVED***));
@@ -141,12 +138,8 @@ public class Analyzer {
               ***REMOVED***
           ***REMOVED***
       ***REMOVED***
-
         System.out.println(wadaLab.calcGradePercentage("B3"));
         System.out.println(wadaLab.calcGradePercentage("B4"));
         System.out.println(wadaLab.calcGradePercentage("M2"));
-
-
   ***REMOVED***
-
 }
