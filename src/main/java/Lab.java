@@ -1,4 +1,12 @@
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+
+import java.io.*;
+import java.rmi.server.ExportException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +26,8 @@ public class Lab {
         }
     }
 
+
+
     public double calcGradePercentage(String grade){
         int allRead = 0;
         int allReceive = 0;
@@ -31,9 +41,9 @@ public class Lab {
 
             }
         }
-        int percentage =(int) ((double) allRead / allReceive*100);
+        int percentage =(int) ((double) allRead / allReceive*10000);
         System.out.println(grade + "|"+allRead+"|"+allReceive);
-        return (double) percentage / 100 ;
+        return (double) percentage / 10000 *100;
     }
 
 
