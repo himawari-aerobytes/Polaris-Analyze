@@ -28,13 +28,15 @@ public class Analyzer {
         //解析期間を指定．
         final Calendar START_DATE = parseCalendar("2021-10-1 00:00:00");
         final Calendar END_DATE = parseCalendar("2021-10-31 23:59:59");
-        final String PolarisJSON = CSVProcessor.ReadCSV("source.csv");
+        String fileName="";
+
+        final String PolarisJSON = CSVProcessor.ReadCSV(args***REMOVED***0***REMOVED***);
 
         //jsonファイルを直接読むときはコメントアウト解除
-        //final File PolarisJSON = new File("source.json");
+        //final File PolarisJSON = new File(args***REMOVED***0***REMOVED***);
 
 
-        List<Member> TMPmembers = new ArrayList<>();
+        List<Member> members = new ArrayList<>();
 
         /**
          * 研究室メンバーの追加
@@ -42,30 +44,30 @@ public class Analyzer {
          * jsonfileの既読状態のt_device_mng_idを参照してidを確認してください．
          * ここの番号付与アルゴリズムは変更になるかもしれません．
          */
-        TMPmembers.add(new Member("小堺", "135", "M2"));
-        TMPmembers.add(new Member("中井", "134", "M2"));
-        TMPmembers.add(new Member("NP中島", "136", "B4"));
-        TMPmembers.add(new Member("RB藤村", "137", "B4"));
-        TMPmembers.add(new Member("GP五十嵐", "138", "B4"));
-        TMPmembers.add(new Member("RB菅沼", "139", "B4"));
-        TMPmembers.add(new Member("BD渡邉", "140", "B4"));
-        TMPmembers.add(new Member("RB梅澤", "141", "B4"));
-        TMPmembers.add(new Member("GP木村", "142", "B4"));
-        TMPmembers.add(new Member("ED林", "143", "B4"));
-        TMPmembers.add(new Member("GP鈴木", "144", "B4"));
-        TMPmembers.add(new Member("河北", "148", "B3"));
-        TMPmembers.add(new Member("小原", "149", "B3"));
-        TMPmembers.add(new Member("小熊", "147", "B3"));
-        TMPmembers.add(new Member("迫田", "150", "B3"));
-        TMPmembers.add(new Member("高瀬", "151", "B3"));
-        TMPmembers.add(new Member("中島啓", "152", "B3"));
-        TMPmembers.add(new Member("夏目", "153", "B3"));
-        TMPmembers.add(new Member("長谷川", "154", "B3"));
-        TMPmembers.add(new Member("三田", "155", "B3"));
+        members.add(new Member("小堺", "135", "M2"));
+        members.add(new Member("中井", "134", "M2"));
+        members.add(new Member("NP中島", "136", "B4"));
+        members.add(new Member("RB藤村", "137", "B4"));
+        members.add(new Member("GP五十嵐", "138", "B4"));
+        members.add(new Member("RB菅沼", "139", "B4"));
+        members.add(new Member("BD渡邉", "140", "B4"));
+        members.add(new Member("RB梅澤", "141", "B4"));
+        members.add(new Member("GP木村", "142", "B4"));
+        members.add(new Member("ED林", "143", "B4"));
+        members.add(new Member("GP鈴木", "144", "B4"));
+        members.add(new Member("河北", "148", "B3"));
+        members.add(new Member("小原", "149", "B3"));
+        members.add(new Member("小熊", "147", "B3"));
+        members.add(new Member("迫田", "150", "B3"));
+        members.add(new Member("高瀬", "151", "B3"));
+        members.add(new Member("中島啓", "152", "B3"));
+        members.add(new Member("夏目", "153", "B3"));
+        members.add(new Member("長谷川", "154", "B3"));
+        members.add(new Member("三田", "155", "B3"));
 
 
-        //研究室全体をクラス化しました．
-        final Lab wadaLab = new Lab(TMPmembers.toArray(new Member***REMOVED***TMPmembers.size()***REMOVED***));
+        //研究室全体をクラス化．
+        final Lab wadaLab = new Lab(members.toArray(new Member***REMOVED***members.size()***REMOVED***));
         final ObjectMapper mapper = new ObjectMapper();
 
         //csvからJSONに変換されたものが入っています．
@@ -77,7 +79,7 @@ public class Analyzer {
          */
         for (Map<String, Object> msg : polarisJSON) {
             final Calendar createdDate = parseCalendar((String) msg.get("登録日時"));
-            final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, Object>>>(){});
+            final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, String>>>(){});
             final String messageType = (String) msg.get("形態");
 
 
@@ -119,7 +121,7 @@ public class Analyzer {
                         continue;
                   ***REMOVED***
 
-                    TMPmembers.stream()
+                    members.stream()
                             .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
                             .forEach(x -> {
                                 x.getCounter().addRead(messageType);
@@ -130,7 +132,7 @@ public class Analyzer {
 
                 if (readCondition.equals("未読")) {
 
-                    TMPmembers.stream()
+                    members.stream()
                             .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
                             .forEach(x -> {
                                 x.getCounter().addReceive(messageType);
