@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,11 +26,15 @@ public class Analyzer {
 
     public static void main(String args***REMOVED******REMOVED***) throws IOException {
         //解析期間を指定．
-        final Calendar START_DATE = parseCalendar("2021-10-1 00:00:00");
-        final Calendar END_DATE = parseCalendar("2021-10-31 23:59:59");
-        String fileName="";
+        final Calendar START_DATE = parseCalendar("2021-1-1 00:00:00");
+        final Calendar END_DATE = parseCalendar("2021-11-31 23:59:59");
+        final ObjectMapper mapper = new ObjectMapper();
+        final String PolarisJSON = CSVDeserializer.ReadCSV(args***REMOVED***0***REMOVED***);
+        final File Membersfile = new File("Members.json");
 
-        final String PolarisJSON = CSVProcessor.ReadCSV(args***REMOVED***0***REMOVED***);
+        final File MemberJSON = mapper.readValue(,Member.class);
+
+        List<Map<String, String>> _members= mapper.readValue(, Member.class);
 
         //jsonファイルを直接読むときはコメントアウト解除
         //final File PolarisJSON = new File(args***REMOVED***0***REMOVED***);
@@ -53,6 +58,7 @@ public class Analyzer {
         members.add(new Member("GP木村", "142", "B4"));
         members.add(new Member("ED林", "143", "B4"));
         members.add(new Member("GP鈴木", "144", "B4"));
+        members.add(new Member("ED梶原", "146", "B4"));
         members.add(new Member("河北", "148", "B3"));
         members.add(new Member("小原", "149", "B3"));
         members.add(new Member("小熊", "147", "B3"));
@@ -65,7 +71,7 @@ public class Analyzer {
 
         //研究室全体をクラス化．
         final Lab wadaLab = new Lab(members.toArray(new Member***REMOVED***members.size()***REMOVED***));
-        final ObjectMapper mapper = new ObjectMapper();
+
 
         //csvからJSONに変換されたものが入っています．
         List<Map<String, Object>> polarisJSON = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {
@@ -141,5 +147,7 @@ public class Analyzer {
         System.out.println(wadaLab.calcGradePercentage("B3"));
         System.out.println(wadaLab.calcGradePercentage("B4"));
         System.out.println(wadaLab.calcGradePercentage("M2"));
+
+        members.stream().filter( x -> "146".equals(x.getNumber())).forEach(x -> System.out.println(x.getCounter().getAllRead()));
   ***REMOVED***
 }

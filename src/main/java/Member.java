@@ -1,8 +1,20 @@
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({
+        "name",
+        "number",
+        "grade"
+})
 public class Member {
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("grade")
     private String grade;
+    @JsonProperty("number")
     private String number;
     private Counter counter;
+
 
 
     public String getName() {
@@ -34,6 +46,8 @@ public class Member {
         this.counter = new Counter();
   ***REMOVED***
 
+    public Member(){}
+
     @Override
     public String toString(){
         return grade+name;
@@ -45,6 +59,10 @@ public class Member {
 
     public void setGrade(String grade){
         this.grade = grade;
+  ***REMOVED***
+
+    public void setNumber(String number) {
+        this.number = number;
   ***REMOVED***
 
 
