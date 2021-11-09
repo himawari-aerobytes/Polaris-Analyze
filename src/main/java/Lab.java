@@ -20,11 +20,11 @@ public class Lab {
      *
      * @param members 研究室全メンバーの配列
      */
-    public Lab(Member***REMOVED******REMOVED*** members){
+    public Lab(Member[] members){
         for(Member member: members){
             this.members.put(member.getNumber(),member);
-      ***REMOVED***
-  ***REMOVED***
+        }
+    }
 
 
 
@@ -39,12 +39,12 @@ public class Lab {
                 allReceive += member.getValue().getCounter().getAllReceived();
                 allRead += member.getValue().getCounter().getAllRead();
 
-          ***REMOVED***
-      ***REMOVED***
+            }
+        }
         int percentage =(int) ((double) allRead / allReceive*10000);
         System.out.println(grade + "|"+allRead+"|"+allReceive);
         return (double) percentage / 10000 *100;
-  ***REMOVED***
+    }
 
 
 }

@@ -66,110 +66,110 @@ public class Message {
         this.root_push_id = root_push_id;
         this.readCondition = readCondition;
 
-  ***REMOVED***
+    }
 
     //以下，自動生成
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
-  ***REMOVED***
+    }
 
     public void setType(String type) {
         this.type = type;
-  ***REMOVED***
+    }
 
     public void setHeadline(String headline) {
         this.headline = headline;
-  ***REMOVED***
+    }
 
     public void setAPNsSend(String APNsSend) {
         this.APNsSend = APNsSend;
-  ***REMOVED***
+    }
 
     public void setAPNsSuccess(String APNsSuccess) {
         this.APNsSuccess = APNsSuccess;
-  ***REMOVED***
+    }
 
     public void setAPNsFail(String APNsFail) {
         this.APNsFail = APNsFail;
-  ***REMOVED***
+    }
 
     public void setGCMSend(String GCMSend) {
         this.GCMSend = GCMSend;
-  ***REMOVED***
+    }
 
     public void setGCMSuccess(String GCMSuccess) {
         this.GCMSuccess = GCMSuccess;
-  ***REMOVED***
+    }
 
     public void setGCMFail(String GCMFail) {
         this.GCMFail = GCMFail;
-  ***REMOVED***
+    }
 
     public void setSender(String sender) {
         this.sender = sender;
-  ***REMOVED***
+    }
 
     public void setUser(String user) {
         this.user = user;
-  ***REMOVED***
+    }
 
     public void setRoot_push_id(String root_push_id) {
         this.root_push_id = root_push_id;
-  ***REMOVED***
+    }
 
     public void setReadCondition(String readCondition) {
         this.readCondition = readCondition;
-  ***REMOVED***
+    }
 
     public String getCreatedDate() {
         return createdDate;
-  ***REMOVED***
+    }
 
     public String getType() {
         return type;
-  ***REMOVED***
+    }
 
     public String getHeadline() {
         return headline;
-  ***REMOVED***
+    }
 
     public String getAPNsSend() {
         return APNsSend;
-  ***REMOVED***
+    }
 
     public String getAPNsSuccess() {
         return APNsSuccess;
-  ***REMOVED***
+    }
 
     public String getAPNsFail() {
         return APNsFail;
-  ***REMOVED***
+    }
 
     public String getGCMSend() {
         return GCMSend;
-  ***REMOVED***
+    }
 
     public String getGCMSuccess() {
         return GCMSuccess;
-  ***REMOVED***
+    }
 
     public String getGCMFail() {
         return GCMFail;
-  ***REMOVED***
+    }
 
     public String getSender() {
         return sender;
-  ***REMOVED***
+    }
 
     public String getUser() {
         return user;
-  ***REMOVED***
+    }
 
     public String getRoot_push_id() {
         return root_push_id;
-  ***REMOVED***
+    }
 
     public String getReadCondition() {
         return readCondition;
-  ***REMOVED***
+    }
 }

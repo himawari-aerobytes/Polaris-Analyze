@@ -28,12 +28,12 @@ public class CSVDeserializer {
 
             return objectMapper.writeValueAsString(messageList);
 
-      ***REMOVED***catch (IOException e){
+        }catch (IOException e){
             throw new ExportException("読み込み時にエラーが発生しました\n"+e);
-      ***REMOVED***
+        }
 
 
-  ***REMOVED***
+    }
 
 }
 

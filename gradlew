@@ -26,7 +26,7 @@
 # Resolve links: $0 may be a link
 PRG="$0"
 # Need this for relative symlinks.
-while ***REMOVED*** -h "$PRG" ***REMOVED*** ; do
+while [ -h "$PRG" ] ; do
     ls=`ls -ld "$PRG"`
     link=`expr "$ls" : '.*-> \(.*\)$'`
     if expr "$link" : '/.*' > /dev/null; then
@@ -84,14 +84,14 @@ CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
 
 
 # Determine the Java command to use to start the JVM.
-if ***REMOVED*** -n "$JAVA_HOME" ***REMOVED*** ; then
-    if ***REMOVED*** -x "$JAVA_HOME/jre/sh/java" ***REMOVED*** ; then
+if [ -n "$JAVA_HOME" ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
         # IBM's JDK on AIX uses strange locations for the executables
         JAVACMD="$JAVA_HOME/jre/sh/java"
     else
         JAVACMD="$JAVA_HOME/bin/java"
     fi
-    if ***REMOVED*** ! -x "$JAVACMD" ***REMOVED*** ; then
+    if [ ! -x "$JAVACMD" ] ; then
         die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
 
 Please set the JAVA_HOME variable in your environment to match the
@@ -106,14 +106,14 @@ location of your Java installation."
 fi
 
 # Increase the maximum file descriptors if we can.
-if ***REMOVED*** "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ***REMOVED*** ; then
+if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
     MAX_FD_LIMIT=`ulimit -H -n`
-    if ***REMOVED*** $? -eq 0 ***REMOVED*** ; then
-        if ***REMOVED*** "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ***REMOVED*** ; then
+    if [ $? -eq 0 ] ; then
+        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ] ; then
             MAX_FD="$MAX_FD_LIMIT"
         fi
         ulimit -n $MAX_FD
-        if ***REMOVED*** $? -ne 0 ***REMOVED*** ; then
+        if [ $? -ne 0 ] ; then
             warn "Could not set maximum file descriptor limit: $MAX_FD"
         fi
     else
@@ -127,7 +127,7 @@ if $darwin; then
 fi
 
 # For Cygwin or MSYS, switch paths to Windows format before running java
-if ***REMOVED*** "$cygwin" = "true" -o "$msys" = "true" ***REMOVED*** ; then
+if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
     APP_HOME=`cygpath --path --mixed "$APP_HOME"`
     CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
 
@@ -142,7 +142,7 @@ if ***REMOVED*** "$cygwin" = "true" -o "$msys" = "true" ***REMOVED*** ; then
     done
     OURCYGPATTERN="(^($ROOTDIRS))"
     # Add a user-defined pattern to the cygpath arguments
-    if ***REMOVED*** "$GRADLE_CYGPATTERN" != "" ***REMOVED*** ; then
+    if [ "$GRADLE_CYGPATTERN" != "" ] ; then
         OURCYGPATTERN="$OURCYGPATTERN|($GRADLE_CYGPATTERN)"
     fi
     # Now convert the arguments - kludge to limit ourselves to /bin/sh
@@ -151,7 +151,7 @@ if ***REMOVED*** "$cygwin" = "true" -o "$msys" = "true" ***REMOVED*** ; then
         CHECK=`echo "$arg"|egrep -c "$OURCYGPATTERN" -`
         CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### Determine if an option
 
-        if ***REMOVED*** $CHECK -ne 0 ***REMOVED*** && ***REMOVED*** $CHECK2 -eq 0 ***REMOVED*** ; then                    ### Added a condition
+        if [ $CHECK -ne 0 ] && [ $CHECK2 -eq 0 ] ; then                    ### Added a condition
             eval `echo args$i`=`cygpath --path --ignore --mixed "$arg"`
         else
             eval `echo args$i`="\"$arg\""
