@@ -2,7 +2,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,16 +32,24 @@ public class Analyzer {
         final Calendar END_DATE = parseCalendar("2021-11-31 23:59:59");
         final ObjectMapper mapper = new ObjectMapper();
         final String PolarisJSON = CSVDeserializer.ReadCSV(args[0]);
-        final File Membersfile = new File("Members.json");
 
-        final File MemberJSON = mapper.readValue(,Member.class);
+        FileInputStream MembersFile = new FileInputStream("Members.json");
 
-        List<Map<String, String>> _members= mapper.readValue(, Member.class);
+        List<Map<String, String>> MembersJSON = mapper.readValue(MembersFile, new TypeReference<List<Map<String, String>>>() {
+        });
 
         //jsonファイルを直接読むときはコメントアウト解除
         //final File PolarisJSON = new File(args[0]);
 
         List<Member> members = new ArrayList<>();
+
+
+        for(Map<String,String> member : MembersJSON ){
+            final String number = member.get("number");
+            final String grade = member.get("grade");
+            final String name = member.get("name");
+            members.add(new Member(name,number,grade));
+        }
 
         /**
          * 研究室メンバーの追加
@@ -47,27 +57,7 @@ public class Analyzer {
          * jsonfileの既読状態のt_device_mng_idを参照してidを確認してください．
          * ここの番号付与アルゴリズムは変更になるかもしれません．
          */
-        members.add(new Member("小堺", "135", "M2"));
-        members.add(new Member("中井", "134", "M2"));
-        members.add(new Member("NP中島", "136", "B4"));
-        members.add(new Member("RB藤村", "137", "B4"));
-        members.add(new Member("GP五十嵐", "138", "B4"));
-        members.add(new Member("RB菅沼", "139", "B4"));
-        members.add(new Member("BD渡邉", "140", "B4"));
-        members.add(new Member("RB梅澤", "141", "B4"));
-        members.add(new Member("GP木村", "142", "B4"));
-        members.add(new Member("ED林", "143", "B4"));
-        members.add(new Member("GP鈴木", "144", "B4"));
-        members.add(new Member("ED梶原", "146", "B4"));
-        members.add(new Member("河北", "148", "B3"));
-        members.add(new Member("小原", "149", "B3"));
-        members.add(new Member("小熊", "147", "B3"));
-        members.add(new Member("迫田", "150", "B3"));
-        members.add(new Member("高瀬", "151", "B3"));
-        members.add(new Member("中島啓", "152", "B3"));
-        members.add(new Member("夏目", "153", "B3"));
-        members.add(new Member("長谷川", "154", "B3"));
-        members.add(new Member("三田", "155", "B3"));
+
 
         //研究室全体をクラス化．
         final Lab wadaLab = new Lab(members.toArray(new Member[members.size()]));
