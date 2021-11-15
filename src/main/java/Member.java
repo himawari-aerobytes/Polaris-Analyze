@@ -44,6 +44,7 @@ public class Member {
         this.grade = grade;
         this.number = number;
         this.counter = new Counter();
+
     }
 
     public Member(){}

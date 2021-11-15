@@ -2,9 +2,13 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Counter {
-    private final String[] CATEGORIES = {"ゼミ入退室連絡", "ゼミ緊急", "GR連絡", "一般", "資料作成連絡", "GR緊急", "共通連絡", "共通緊急"};
+    private final String cyan   = "\u001b[00;36m";
+    private final String end    = "\u001b[00m";
+    private final String red    = "\u001b[00;31m";
+    private final String[] CATEGORIES = {"ゼミ入退室連絡", "ゼミ緊急", "GR連絡", "一般", "資料作成連絡", "GR緊急", "共通連絡", "共通緊急","その他"};
     private Map<String,Integer> receive = new HashMap<String,Integer>();
     private Map<String,Integer> read = new HashMap<String,Integer>();
+    private int send = 0;
 
     /**
      * @constructor
@@ -30,6 +34,7 @@ public class Counter {
             allReceived += this.receive.get(CATEGORY);
         }
 
+
         return allReceived;
     }
 
@@ -52,8 +57,17 @@ public class Counter {
      */
     public void addReceive(String messageType)
     {
-        int receive = this.receive.get(messageType);
-        this.receive.replace(messageType,++receive);
+        try{
+            int receive = this.receive.get(messageType);
+            this.receive.replace(messageType,++receive);
+
+        }catch (NullPointerException e){
+            int receive = this.receive.get("その他");
+            this.receive.replace("その他",++receive);
+            System.out.println(red+messageType+"は既定のカテゴリではありません．"+end);
+
+        }
+
 
     }
 
@@ -62,8 +76,23 @@ public class Counter {
      * @param messageType
      */
     public void addRead(String messageType){
-        int read = this.receive.get(messageType);
-        this.read.replace(messageType,++read);
+        try{
+            int read = this.read.get(messageType);
+            this.read.replace(messageType,++read);
+        }catch (NullPointerException e){
+            int read = this.read.get("その他");
+            this.read.replace("その他",++read);
+            System.out.println(red+messageType+"は既定のカテゴリではありません．"+end);
+        }
+
+    }
+
+    public void addSend(){
+        this.send++;
+    }
+
+    public int getSend(){
+        return this.send;
     }
 
     /**

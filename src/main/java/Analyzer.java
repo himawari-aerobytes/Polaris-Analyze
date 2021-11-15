@@ -1,10 +1,8 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -12,6 +10,8 @@ import java.util.*;
 import static java.lang.System.exit;
 
 public class Analyzer {
+
+
     private static Calendar parseCalendar(String createdDate) {
         Calendar cal = Calendar.getInstance();
         final SimpleDateFormat strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -28,15 +28,20 @@ public class Analyzer {
 
     public static void main(String args[]) throws IOException {
         //解析期間を指定．
-        final Calendar START_DATE = parseCalendar("2021-1-1 00:00:00");
-        final Calendar END_DATE = parseCalendar("2021-11-31 23:59:59");
+        final Calendar START_DATE = parseCalendar("2021-11-7 00:00:00");
+        final Calendar END_DATE = parseCalendar("2021-11-13 23:59:59");
         final ObjectMapper mapper = new ObjectMapper();
         final String PolarisJSON = CSVDeserializer.ReadCSV(args[0]);
+
+       final String cyan   = "\u001b[00;46m";
+       final String end    = "\u001b[00m";
+       final String red    = "\u001b[00;41m";
 
         FileInputStream MembersFile = new FileInputStream("Members.json");
 
         List<Map<String, String>> MembersJSON = mapper.readValue(MembersFile, new TypeReference<List<Map<String, String>>>() {
         });
+
 
         //jsonファイルを直接読むときはコメントアウト解除
         //final File PolarisJSON = new File(args[0]);
@@ -60,7 +65,7 @@ public class Analyzer {
 
 
         //研究室全体をクラス化．
-        final Lab wadaLab = new Lab(members.toArray(new Member[members.size()]));
+        final Lab wadaLab = new Lab(members);
 
 
         //csvからJSONに変換されたものが入っています．
@@ -74,6 +79,10 @@ public class Analyzer {
             final Calendar createdDate = parseCalendar((String) msg.get("登録日時"));
             final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, String>>>(){});
             final String messageType = (String) msg.get("形態");
+            final String sender = (String) msg.get("sender");
+
+
+
 
 
             /**
@@ -86,18 +95,26 @@ public class Analyzer {
             if (!((createdDate.compareTo(START_DATE) >= 0) && (createdDate.compareTo(END_DATE) <= 0))) {
                 continue;
             }
+            System.out.println( red + msg.get("登録日時")+" "+msg.get("形態")+ end);
+
+            wadaLab.searchMember(sender).ifPresent(x -> {
+                x.getCounter().addSend();
+            });
+
+
+
 
             /**
              * メッセージ既読のJSONデータ処理
              */
             for (Map<String, String> reader : readers) {
-                final String sender = (String) msg.get("sender");
                 final String readCondition = reader.get("status_name");
 
                 //自分自身を既読を除外
                 if (sender.contains(reader.get("user_notes"))) {
                     continue;
                 }
+
 
                 if (readCondition.equals("既読")) {
 
@@ -111,25 +128,31 @@ public class Analyzer {
                      * 1 : a > b
                      */
                     if (!((readDate.compareTo(START_DATE) >= 0) && (readDate.compareTo(END_DATE) <= 0))) {
-                        continue;
+                        members.stream()
+                                .filter(x -> x.getNumber().equals(reader.get("t_device_mng_id")))
+                                .forEach(x -> {
+                                    x.getCounter().addReceive(messageType);
+                                    System.out.println("未読: "+x.getName());
+                                });
+                    }else{
+                        members.stream()
+                                .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
+                                .forEach(x -> {
+                                    System.out.println("既読: "+x.getName());
+                                    x.getCounter().addRead(messageType);
+                                    x.getCounter().addReceive(messageType);
+                                });
+
                     }
 
-                    members.stream()
-                            .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
-                            .forEach(x -> {
-                                x.getCounter().addRead(messageType);
-                                x.getCounter().addReceive(messageType);
-
-                            });
                 }
 
                 if (readCondition.equals("未読")) {
-
                     members.stream()
-                            .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
+                            .filter(x -> x.getNumber().equals(reader.get("t_device_mng_id")))
                             .forEach(x -> {
                                 x.getCounter().addReceive(messageType);
-
+                                System.out.println("未読: "+x.getName());
                             });
                 }
             }
@@ -138,6 +161,5 @@ public class Analyzer {
         System.out.println(wadaLab.calcGradePercentage("B4"));
         System.out.println(wadaLab.calcGradePercentage("M2"));
 
-        members.stream().filter( x -> "146".equals(x.getNumber())).forEach(x -> System.out.println(x.getCounter().getAllRead()));
     }
 }
