@@ -9,9 +9,11 @@ import java.util.Map;
 
 public class ReadRatioSerializer {
     private Map<String,Object> jsonObject = new HashMap<>();
+
     final SimpleDateFormat strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     final Calendar START_ANALYZE = JPCalendar.parseCalendar("2021-09-26 00:00:00");
-    final Calendar END_ANALYZE = JPCalendar.parseCalendar("2021-11-13 23:59:59");
+    Calendar END_ANALYZE = Calendar.getInstance();
+
 
     final Calendar TODAY = Calendar.getInstance();
 

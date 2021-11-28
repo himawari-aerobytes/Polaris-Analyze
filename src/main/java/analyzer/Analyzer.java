@@ -13,13 +13,12 @@ import java.util.*;
 
 public class Analyzer {
 
-
-    public static void main(String args[]) throws IOException {
+    public static void analyze(String arg0,String startDate,String endDate) throws IOException {
         //解析期間を指定．
-        final Calendar START_DATE = JPCalendar.parseCalendar("2021-11-14 00:00:00");
-        final Calendar END_DATE = JPCalendar.parseCalendar("2021-11-20 23:59:59");
+        final Calendar START_DATE = JPCalendar.parseCalendar(startDate);
+        final Calendar END_DATE = JPCalendar.parseCalendar(endDate);
         final ObjectMapper mapper = new ObjectMapper();
-        final String PolarisJSON = CSVDeserializer.ReadCSV(args[0]);
+        final String PolarisJSON = CSVDeserializer.ReadCSV(arg0);
 
 
         FileInputStream MembersFile = new FileInputStream("Members.json");
@@ -59,6 +58,7 @@ public class Analyzer {
         /**
          * 全てのJSONデータ処理
          */
+
         for (Map<String, Object> msg : polarisJSON) {
             final Calendar createdDate = JPCalendar.parseCalendar((String) msg.get("登録日時"));
             final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, String>>>(){});
@@ -139,6 +139,9 @@ public class Analyzer {
         System.out.println(wadaLab.calcGradePercentage("B3"));
         System.out.println(wadaLab.calcGradePercentage("B4"));
         System.out.println(wadaLab.calcGradePercentage("M2"));
+
+        //JPCalendar.getWeekend("2021-10-16 10:10:10");
+
 
     }
 }
