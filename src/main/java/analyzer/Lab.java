@@ -1,3 +1,5 @@
+package analyzer;
+
 import java.util.*;
 
 /**
@@ -5,13 +7,8 @@ import java.util.*;
  * 学年ごとの統計を出します
  */
 public class Lab {
-    final String cyan   = "\u001b[00;46m";
-    final String end    = "\u001b[00m";
-    final String red    = "\u001b[00;41m";
 
     private List<Member> members = new ArrayList<>();
-
-
 
     /**
      *
@@ -26,6 +23,14 @@ public class Lab {
     public Optional<Member> searchMember(String name){
         return this.members.stream()
                 .filter(x -> name.contains(x.getName())).findFirst();
+    }
+
+    public void memberAdd(Member member){
+        this.members.add(member);
+    }
+
+    public void memberAdd(String name,String number,String grade){
+        this.members.add(new Member(name,number,grade));
     }
 
 

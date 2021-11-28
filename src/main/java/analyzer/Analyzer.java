@@ -1,41 +1,26 @@
+package analyzer;
+
+import analyzer.io.CSVDeserializer;
+import analyzer.propaties.CUIColor;
+import analyzer.propaties.JPCalendar;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static java.lang.System.exit;
+
 
 public class Analyzer {
 
 
-    private static Calendar parseCalendar(String createdDate) {
-        Calendar cal = Calendar.getInstance();
-        final SimpleDateFormat strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            cal.setTime(strDate.parse(createdDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            exit(-1);
-        }
-
-        return cal;
-
-    }
-
     public static void main(String args[]) throws IOException {
         //解析期間を指定．
-        final Calendar START_DATE = parseCalendar("2021-11-7 00:00:00");
-        final Calendar END_DATE = parseCalendar("2021-11-13 23:59:59");
+        final Calendar START_DATE = JPCalendar.parseCalendar("2021-11-14 00:00:00");
+        final Calendar END_DATE = JPCalendar.parseCalendar("2021-11-20 23:59:59");
         final ObjectMapper mapper = new ObjectMapper();
         final String PolarisJSON = CSVDeserializer.ReadCSV(args[0]);
 
-       final String cyan   = "\u001b[00;46m";
-       final String end    = "\u001b[00m";
-       final String red    = "\u001b[00;41m";
 
         FileInputStream MembersFile = new FileInputStream("Members.json");
 
@@ -63,7 +48,6 @@ public class Analyzer {
          * ここの番号付与アルゴリズムは変更になるかもしれません．
          */
 
-
         //研究室全体をクラス化．
         final Lab wadaLab = new Lab(members);
 
@@ -76,13 +60,10 @@ public class Analyzer {
          * 全てのJSONデータ処理
          */
         for (Map<String, Object> msg : polarisJSON) {
-            final Calendar createdDate = parseCalendar((String) msg.get("登録日時"));
+            final Calendar createdDate = JPCalendar.parseCalendar((String) msg.get("登録日時"));
             final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, String>>>(){});
             final String messageType = (String) msg.get("形態");
             final String sender = (String) msg.get("sender");
-
-
-
 
 
             /**
@@ -95,14 +76,11 @@ public class Analyzer {
             if (!((createdDate.compareTo(START_DATE) >= 0) && (createdDate.compareTo(END_DATE) <= 0))) {
                 continue;
             }
-            System.out.println( red + msg.get("登録日時")+" "+msg.get("形態")+ end);
 
-            wadaLab.searchMember(sender).ifPresent(x -> {
-                x.getCounter().addSend();
-            });
+            CUIColor.println(msg.get("登録日時")+" "+msg.get("形態")+" "+msg.get("sender"),"bg_red");
 
-
-
+            wadaLab.searchMember(sender)
+                    .ifPresent(x -> x.getCounter().addSend());
 
             /**
              * メッセージ既読のJSONデータ処理
@@ -118,7 +96,7 @@ public class Analyzer {
 
                 if (readCondition.equals("既読")) {
 
-                    final Calendar readDate = parseCalendar(reader.get("response_result_created"));
+                    final Calendar readDate = JPCalendar.parseCalendar(reader.get("response_result_created"));
 
                     /**
                      * 既読日時の絞り込み
@@ -138,7 +116,7 @@ public class Analyzer {
                         members.stream()
                                 .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
                                 .forEach(x -> {
-                                    System.out.println("既読: "+x.getName());
+                                    System.out.println("既読: "+x.getName()+" "+reader.get("response_result_created"));
                                     x.getCounter().addRead(messageType);
                                     x.getCounter().addReceive(messageType);
                                 });
@@ -157,6 +135,7 @@ public class Analyzer {
                 }
             }
         }
+
         System.out.println(wadaLab.calcGradePercentage("B3"));
         System.out.println(wadaLab.calcGradePercentage("B4"));
         System.out.println(wadaLab.calcGradePercentage("M2"));

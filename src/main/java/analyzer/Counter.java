@@ -1,14 +1,18 @@
-import java.lang.reflect.Array;
+package analyzer;
+
+import analyzer.propaties.CUIColor;
+
 import java.util.*;
 
 public class Counter {
-    private final String cyan   = "\u001b[00;36m";
-    private final String end    = "\u001b[00m";
-    private final String red    = "\u001b[00;31m";
     private final String[] CATEGORIES = {"ゼミ入退室連絡", "ゼミ緊急", "GR連絡", "一般", "資料作成連絡", "GR緊急", "共通連絡", "共通緊急","その他"};
     private Map<String,Integer> receive = new HashMap<String,Integer>();
     private Map<String,Integer> read = new HashMap<String,Integer>();
     private int send = 0;
+
+    private static void exceptionMessageType(String messageType){
+        CUIColor.println("WARN:"+messageType+"は既定のカテゴリではありません","color_red");
+    }
 
     /**
      * @constructor
@@ -64,7 +68,7 @@ public class Counter {
         }catch (NullPointerException e){
             int receive = this.receive.get("その他");
             this.receive.replace("その他",++receive);
-            System.out.println(red+messageType+"は既定のカテゴリではありません．"+end);
+            exceptionMessageType(messageType);
 
         }
 
@@ -82,7 +86,7 @@ public class Counter {
         }catch (NullPointerException e){
             int read = this.read.get("その他");
             this.read.replace("その他",++read);
-            System.out.println(red+messageType+"は既定のカテゴリではありません．"+end);
+           exceptionMessageType(messageType);
         }
 
     }
@@ -132,7 +136,59 @@ public class Counter {
         return (double) read / receive;
     }
 
+    public static class ReadCondition {
+        private String t_device_id;
+        private String status;
+        private String status_name;
+        private String device_name;
+        private String user_notes;
 
+        public void ReadCondition(String t_device_id,String status,String status_name,String device_name,String user_notes){
+            this.t_device_id = t_device_id;
+            this.status = status;
+            this.status_name = status_name;
+            this.device_name = device_name;
+            this.user_notes = user_notes;
+        }
 
+        public String getT_device_id() {
+            return t_device_id;
+        }
 
+        public String getStatus() {
+            return status;
+        }
+
+        public String getStatus_name() {
+            return status_name;
+        }
+
+        public String getDevice_name() {
+            return device_name;
+        }
+
+        public String getUser_notes() {
+            return user_notes;
+        }
+
+        public void setT_device_id(String t_device_id) {
+            this.t_device_id = t_device_id;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public void setStatus_name(String status_name) {
+            this.status_name = status_name;
+        }
+
+        public void setDevice_name(String device_name) {
+            this.device_name = device_name;
+        }
+
+        public void setUser_notes(String user_notes) {
+            this.user_notes = user_notes;
+        }
+    }
 }
