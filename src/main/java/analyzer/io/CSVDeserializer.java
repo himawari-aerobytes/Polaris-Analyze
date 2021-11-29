@@ -34,8 +34,6 @@ public class CSVDeserializer {
         }catch (IOException e){
             throw new ExportException("読み込み時にエラーが発生しました\n"+e);
         }
-
-
     }
 
 }

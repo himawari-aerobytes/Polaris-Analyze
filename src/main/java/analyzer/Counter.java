@@ -19,6 +19,11 @@ public class Counter {
      * カテゴリのカウントを0で初期化します
      */
     public Counter(){
+        this.Reset();
+
+    }
+
+    public void Reset(){
         for(String CATEGORY : CATEGORIES){
             this.receive.put(CATEGORY,0);
         }
@@ -26,6 +31,7 @@ public class Counter {
         for(String CATEGORY : CATEGORIES){
             this.read.put(CATEGORY,0);
         }
+        this.send = 0;
     }
 
     /**
