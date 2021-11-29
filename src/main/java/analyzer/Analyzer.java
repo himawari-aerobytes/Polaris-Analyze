@@ -1,11 +1,9 @@
 package analyzer;
 
-import analyzer.io.CSVDeserializer;
 import analyzer.propaties.CUIColor;
 import analyzer.propaties.JPCalendar;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -13,58 +11,23 @@ import java.util.*;
 
 public class Analyzer {
 
-    public static void analyze(String arg0,String startDate,String endDate) throws IOException {
+    public static Map<String, AnalyzeResult> analyze(String startDate, String endDate, History history) throws IOException {
         //解析期間を指定．
         final Calendar START_DATE = JPCalendar.parseCalendar(startDate);
         final Calendar END_DATE = JPCalendar.parseCalendar(endDate);
         final ObjectMapper mapper = new ObjectMapper();
-        final String PolarisJSON = CSVDeserializer.ReadCSV(arg0);
-
-
-        FileInputStream MembersFile = new FileInputStream("Members.json");
-
-        List<Map<String, String>> MembersJSON = mapper.readValue(MembersFile, new TypeReference<List<Map<String, String>>>() {
-        });
-
-
-        //jsonファイルを直接読むときはコメントアウト解除
-        //final File PolarisJSON = new File(args[0]);
-
-        List<Member> members = new ArrayList<>();
-
-
-        for(Map<String,String> member : MembersJSON ){
-            final String number = member.get("number");
-            final String grade = member.get("grade");
-            final String name = member.get("name");
-            members.add(new Member(name,number,grade));
-        }
-
-        /**
-         * 研究室メンバーの追加
-         * 名前･番号(t_device_mng_id)･学年
-         * jsonfileの既読状態のt_device_mng_idを参照してidを確認してください．
-         * ここの番号付与アルゴリズムは変更になるかもしれません．
-         */
-
-        //研究室全体をクラス化．
-        final Lab wadaLab = new Lab(members);
-
-
-        //csvからJSONに変換されたものが入っています．
-        List<Map<String, Object>> polarisJSON = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {
-        });
+        final Lab lab = history.getLab();
+        final List<Member> members= history.getMembers();
 
         /**
          * 全てのJSONデータ処理
          */
 
-        for (Map<String, Object> msg : polarisJSON) {
+        for (Map<String, Object> msg : history.getHistory()) {
             final Calendar createdDate = JPCalendar.parseCalendar((String) msg.get("登録日時"));
             final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, String>>>(){});
             final String messageType = (String) msg.get("形態");
             final String sender = (String) msg.get("sender");
-
 
             /**
              * 送信日時の絞り込み
@@ -79,7 +42,7 @@ public class Analyzer {
 
             CUIColor.println(msg.get("登録日時")+" "+msg.get("形態")+" "+msg.get("sender"),"bg_red");
 
-            wadaLab.searchMember(sender)
+            lab.searchMember(sender)
                     .ifPresent(x -> x.getCounter().addSend());
 
             /**
@@ -92,7 +55,6 @@ public class Analyzer {
                 if (sender.contains(reader.get("user_notes"))) {
                     continue;
                 }
-
 
                 if (readCondition.equals("既読")) {
 
@@ -136,12 +98,27 @@ public class Analyzer {
             }
         }
 
-        System.out.println(wadaLab.calcGradePercentage("B3"));
-        System.out.println(wadaLab.calcGradePercentage("B4"));
-        System.out.println(wadaLab.calcGradePercentage("M2"));
+        Map<String,AnalyzeResult> result = new HashMap<>();
+        List<String> grade = new ArrayList<>();
+        grade.add("B3");
+        grade.add("B4");
+        grade.add("M2");
+        for(String g:grade){
+            //順序依存
+            final Double percentage = lab.calcGradePercentage(g);
+            final int allRead = lab.getAllRead().get(g);
+            final int allReceive = lab.getAllReceive().get(g);
+            final String start = (START_DATE.get(Calendar.MONTH)+1)+"月" + START_DATE.get(Calendar.DAY_OF_MONTH)+"日";
+            final String end = (END_DATE.get(Calendar.MONTH)+1)+"月" + END_DATE.get(Calendar.DAY_OF_MONTH)+"日";
+            result.put(g,new AnalyzeResult(start,end,g,allRead,allReceive,percentage));
+        }
 
-        //JPCalendar.getWeekend("2021-10-16 10:10:10");
 
+        //System.out.println(lab.calcGradePercentage("B3"));
+        //System.out.println(lab.calcGradePercentage("B4"));
+        //System.out.println(lab.calcGradePercentage("M2"));
+
+        return result;
 
     }
 }
