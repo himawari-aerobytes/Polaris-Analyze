@@ -18,7 +18,7 @@ public abstract class JPCalendar extends Calendar {
             exit(-1);
         }
 
-        return cal;
+        return (Calendar) cal.clone();
 
     }
 
@@ -39,7 +39,7 @@ public abstract class JPCalendar extends Calendar {
                 break;
         }
 
-        return baseDate;
+        return (Calendar) baseDate.clone();
 
     }
 
