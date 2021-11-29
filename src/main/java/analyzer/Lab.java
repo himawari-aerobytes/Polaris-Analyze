@@ -7,8 +7,9 @@ import java.util.*;
  * 学年ごとの統計を出します
  */
 public class Lab {
-
     private List<Member> members = new ArrayList<>();
+    private Map<String,Integer> allRead = new HashMap<>();
+    private Map<String,Integer> allReceive = new HashMap<>();
 
     /**
      *
@@ -19,6 +20,32 @@ public class Lab {
             this.members.add(member);
         }
     }
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
+
+    public Map<String, Integer> getAllRead() {
+        return allRead;
+    }
+
+    public void setAllRead(Map<String, Integer> allRead) {
+        this.allRead = allRead;
+    }
+
+    public Map<String, Integer> getAllReceive() {
+        return allReceive;
+    }
+
+    public void setAllReceive(Map<String, Integer> allReceive) {
+        this.allReceive = allReceive;
+    }
+
+
+
 
     public Optional<Member> searchMember(String name){
         return this.members.stream()
@@ -35,7 +62,7 @@ public class Lab {
 
 
 
-    public double calcGradePercentage(String grade){
+    public Double calcGradePercentage(String grade){
         int allRead = 0;
         int allReceive = 0;
 
@@ -52,6 +79,15 @@ public class Lab {
 
         int percentage =(int) ((double) allRead / allReceive*10000);
         System.out.println(grade + "|"+allRead+"|"+allReceive);
+
+        this.allRead.put(grade,allRead);
+        this.allReceive.put(grade,allReceive);
+
+        if(0==allReceive){
+            return null;
+
+        }
+
         return (double) percentage / 10000 *100;
     }
 
