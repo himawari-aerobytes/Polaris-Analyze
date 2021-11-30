@@ -28,8 +28,8 @@ public class Analyzer {
 
     public static void main(String args[]) throws IOException {
         //解析期間を指定．
-        final Calendar START_DATE = parseCalendar("2021-11-7 00:00:00");
-        final Calendar END_DATE = parseCalendar("2021-11-13 23:59:59");
+        final Calendar START_DATE = parseCalendar("2021-11-17 12:00:00");
+        final Calendar END_DATE = parseCalendar("2021-11-17 23:59:59");
         final ObjectMapper mapper = new ObjectMapper();
         final String PolarisJSON = CSVDeserializer.ReadCSV(args[0]);
 
@@ -95,8 +95,8 @@ public class Analyzer {
             if (!((createdDate.compareTo(START_DATE) >= 0) && (createdDate.compareTo(END_DATE) <= 0))) {
                 continue;
             }
-            System.out.println( red + msg.get("登録日時")+" "+msg.get("形態")+ end);
-
+            System.out.println( red + msg.get("登録日時")+" "+msg.get("形態")+" "+ msg.get("sender") + end);
+            System.out.println(msg.get("ヘッドライン"));
             wadaLab.searchMember(sender).ifPresent(x -> {
                 x.getCounter().addSend();
             });
@@ -138,7 +138,7 @@ public class Analyzer {
                         members.stream()
                                 .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
                                 .forEach(x -> {
-                                    System.out.println("既読: "+x.getName());
+                                    System.out.println("既読: "+x.getName() +" "+ reader.get("response_result_created"));
                                     x.getCounter().addRead(messageType);
                                     x.getCounter().addReceive(messageType);
                                 });
