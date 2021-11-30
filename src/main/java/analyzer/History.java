@@ -15,7 +15,7 @@ public class History {
     private List<Map<String, Object>> History;
     private FileInputStream MembersFile;
     private List<Map<String, String>> MembersJSON;
-    private List<Member> members=new ArrayList<>();
+    private List<Member> members= new ArrayList<>();
     private Lab lab;
 
     public History(String filename) throws IOException {
@@ -53,6 +53,7 @@ public class History {
     public List<Member> getMembers(){
         return members;
     }
+
     public void allCounterReset(){
         for(Member member : members){
             member.getCounter().Reset();

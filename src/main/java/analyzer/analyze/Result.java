@@ -1,6 +1,6 @@
-package analyzer;
+package analyzer.analyze;
 
-public class AnalyzeResult {
+public class Result {
     private String startDate;
     private String endDate;
     private int Read = 0;
@@ -8,7 +8,7 @@ public class AnalyzeResult {
     private Double percentage = 0.0;
     private String grade;
 
-    public AnalyzeResult(String startDate,String endDate,String grade,int read,int receive,Double percentage){
+    public Result(String startDate, String endDate, String grade, int read, int receive, Double percentage){
         this.startDate = startDate;
         this.endDate = endDate;
         this.grade = grade;
