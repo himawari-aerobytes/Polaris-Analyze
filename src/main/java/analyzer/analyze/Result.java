@@ -1,68 +1,41 @@
 package analyzer.analyze;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Result {
-    private String startDate;
-    private String endDate;
-    private int Read = 0;
-    private int Receive = 0;
-    private Double percentage = 0.0;
+    private String date;
     private String grade;
+    private Double value;
 
-    public Result(String startDate, String endDate, String grade, int read, int receive, Double percentage){
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public Result(String date,String grade,Double value){
+        this.date = date;
         this.grade = grade;
-        this.Read = read;
-        this.Receive = receive;
-        this.percentage = percentage;
+        this.value = value;
+    }
+    public Result(){}
 
+    public String getDate() {
+        return date;
     }
 
-    public int getReceive() {
-        return Receive;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setReceive(int receive) {
-        Receive = receive;
+    public Double getValue() {
+        return value;
     }
 
-    public Double getPercentage() {
-        return percentage;
-    }
-
-    public void setPercentage(Double percentage) {
-        this.percentage = percentage;
-    }
-
-    public int getRead() {
-        return Read;
-    }
-
-    public void setRead(int read) {
-        Read = read;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setValue(Double value) {
+        this.value = value;
     }
 
     public String getGrade() {
         return grade;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setName(String name) {
+        this.grade = name;
     }
 }
