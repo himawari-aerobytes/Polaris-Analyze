@@ -1,5 +1,8 @@
-package analyzer;
+package analyzer.analyze;
 
+import analyzer.History;
+import analyzer.Lab;
+import analyzer.Member;
 import analyzer.propaties.CUIColor;
 import analyzer.propaties.JPCalendar;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -11,7 +14,7 @@ import java.util.*;
 
 public class Analyzer {
 
-    public static Map<String, AnalyzeResult> analyze(String startDate, String endDate, History history) throws IOException {
+    public static Map<String, Result> analyze(String startDate, String endDate, History history) throws IOException {
         //解析期間を指定．
         final Calendar START_DATE = JPCalendar.parseCalendar(startDate);
         final Calendar END_DATE = JPCalendar.parseCalendar(endDate);
@@ -98,11 +101,11 @@ public class Analyzer {
             }
         }
 
-        Map<String,AnalyzeResult> result = new HashMap<>();
+        Map<String, Result> result = new HashMap<>();
         List<String> grade = new ArrayList<>();
-        grade.add("B3");
-        grade.add("B4");
-        grade.add("M2");
+        String[] arrayGrade = {"B3","B4","M2"};
+        Collections.addAll(grade,arrayGrade);
+
         for(String g:grade){
             //順序依存
             final Double percentage = lab.calcGradePercentage(g);
@@ -110,13 +113,8 @@ public class Analyzer {
             final int allReceive = lab.getAllReceive().get(g);
             final String start = (START_DATE.get(Calendar.MONTH)+1)+"月" + START_DATE.get(Calendar.DAY_OF_MONTH)+"日";
             final String end = (END_DATE.get(Calendar.MONTH)+1)+"月" + END_DATE.get(Calendar.DAY_OF_MONTH)+"日";
-            result.put(g,new AnalyzeResult(start,end,g,allRead,allReceive,percentage));
+            result.put(g,new Result(start,end,g,allRead,allReceive,percentage));
         }
-
-
-        //System.out.println(lab.calcGradePercentage("B3"));
-        //System.out.println(lab.calcGradePercentage("B4"));
-        //System.out.println(lab.calcGradePercentage("M2"));
 
         return result;
 

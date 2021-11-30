@@ -88,7 +88,11 @@ public class Lab {
 
         }
 
-        return (double) percentage / 10000 *100;
+        final double value = (double)percentage / 10000 *100;
+        System.out.println(value);
+
+        return Double.valueOf(value);
+
     }
 
 
