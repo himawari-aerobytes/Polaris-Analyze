@@ -1,19 +1,14 @@
 package web;
 
 import analyzer.analyze.Result;
-import analyzer.analyze.Analyzer;
-import analyzer.History;
-import analyzer.propaties.JPCalendar;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
-import java.io.IOException;
 import java.util.*;
 
 import static analyzer.analyze.Controller.getResults;
-import static java.lang.System.exit;
 
 @Controller
 public class AnalyzerController {

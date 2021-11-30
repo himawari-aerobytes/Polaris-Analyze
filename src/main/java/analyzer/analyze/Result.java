@@ -1,68 +1,37 @@
 package analyzer.analyze;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Result {
-    private String startDate;
-    private String endDate;
-    private int Read = 0;
-    private int Receive = 0;
-    private Double percentage = 0.0;
-    private String grade;
+    private List<String> date = new ArrayList<>();
+    private List<Double> value = new ArrayList<>();
+    private String name;
 
-    public Result(String startDate, String endDate, String grade, int read, int receive, Double percentage){
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.grade = grade;
-        this.Read = read;
-        this.Receive = receive;
-        this.percentage = percentage;
 
+    public Result(){}
+
+    public List<String> getDate() {
+        return date;
     }
 
-    public int getReceive() {
-        return Receive;
+    public void setDate(List<String> date) {
+        this.date = date;
     }
 
-    public void setReceive(int receive) {
-        Receive = receive;
+    public List<Double> getValue() {
+        return value;
     }
 
-    public Double getPercentage() {
-        return percentage;
+    public void setValue(List<Double> value) {
+        this.value = value;
     }
 
-    public void setPercentage(Double percentage) {
-        this.percentage = percentage;
+    public String getName() {
+        return name;
     }
 
-    public int getRead() {
-        return Read;
-    }
-
-    public void setRead(int read) {
-        Read = read;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setName(String name) {
+        this.name = name;
     }
 }

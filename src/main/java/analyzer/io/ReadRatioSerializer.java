@@ -1,6 +1,6 @@
 package analyzer.io;
 
-import analyzer.propaties.JPCalendar;
+import analyzer.propaties.Cal;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,7 +11,7 @@ public class ReadRatioSerializer {
     private Map<String,Object> jsonObject = new HashMap<>();
 
     final SimpleDateFormat strDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    final Calendar START_ANALYZE = JPCalendar.parseCalendar("2021-09-26 00:00:00");
+    final Calendar START_ANALYZE = Cal.parseCalendar("2021-09-26 00:00:00");
     Calendar END_ANALYZE = Calendar.getInstance();
 
 
