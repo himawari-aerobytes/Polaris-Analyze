@@ -11,15 +11,21 @@ import static analyzer.propaties.Cal.nextOrSame;
 import static analyzer.propaties.Cal.toLocalDateTime;
 import static java.lang.System.exit;
 
-public class Controller {
-    public static List<ResultsArray> getResults() {
+public class Store {
+    public List<ResultsArray> returnValue = new ArrayList<>();
+    public ResultsArray B3 = new ResultsArray();
+    public ResultsArray B4 = new ResultsArray();
+    public ResultsArray M2 = new ResultsArray();
+
+
+    public Store() {
         final String filename = "source.csv";
 
         final LocalDateTime StartDate = toLocalDateTime("2021-09-26 00:00:00");
         final LocalDateTime EndDate = toLocalDateTime("2021-11-24 23:59:59");
 
         List<List<Result>> results = new ArrayList<>();
-        List<ResultsArray> returnValue = new ArrayList<>();
+
 
 
         History history = new History();
@@ -59,12 +65,10 @@ public class Controller {
 
         }
 
-        ResultsArray B3 = new ResultsArray();
-        ResultsArray B4 = new ResultsArray();
-        ResultsArray M2 = new ResultsArray();
-
         for(List<Result> result : results){
             for(Result x : result){
+                System.out.println(x.getGrade());
+
                switch (x.getGrade()){
                    case "B3":
                        B3.addValue(x.getValue());
@@ -91,11 +95,13 @@ public class Controller {
         B4.setGrade("B4");
         M2.setGrade("M2");
 
+
         returnValue.add(B3);
         returnValue.add(B4);
         returnValue.add(M2);
 
-        return (List<ResultsArray>) returnValue.clone();
+
+        //return (List<ResultsArray>) returnValue.clone();
     }
 
 

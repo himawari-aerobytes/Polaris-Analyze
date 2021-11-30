@@ -2,6 +2,7 @@ package web;
 
 import analyzer.analyze.Result;
 import analyzer.analyze.ResultsArray;
+import analyzer.analyze.Store;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,14 +10,14 @@ import org.springframework.ui.Model;
 
 import java.util.*;
 
-import static analyzer.analyze.Controller.getResults;
+
 
 @Controller
 public class AnalyzerController {
 
     @GetMapping("/")
     public String helloGradleGet(Model model) {
-        final List<ResultsArray> results = getResults();
+        Store store = new Store();
         List<String> B3Label = new ArrayList<>();
         List<String> B4Label = new ArrayList<>();
         List<String> M2Label = new ArrayList<>();
@@ -26,7 +27,7 @@ public class AnalyzerController {
         List<Double> M2Value = new ArrayList<>();
 
 
-        for(ResultsArray result : results){
+        for(ResultsArray result : store.returnValue){
             switch (result.getGrade()){
                 case "B3":
                     B3Label.addAll(result.getDate());

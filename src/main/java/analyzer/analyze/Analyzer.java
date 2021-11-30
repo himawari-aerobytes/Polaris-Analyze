@@ -116,7 +116,7 @@ public class Analyzer {
             final String end = endDate.getMonthValue()+"月" + endDate.getDayOfMonth()+"日";
             final String date = start+ " ~ " + end;
 
-            list.add(new Result(g,date,percentage));
+            list.add(new Result(date,g,percentage));
 
         }
 

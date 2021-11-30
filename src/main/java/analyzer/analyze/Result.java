@@ -8,13 +8,12 @@ public class Result {
     private String grade;
     private Double value;
 
-
-
     public Result(String date,String grade,Double value){
         this.date = date;
         this.grade = grade;
         this.value = value;
     }
+    public Result(){}
 
     public String getDate() {
         return date;
