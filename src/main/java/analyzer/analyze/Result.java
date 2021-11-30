@@ -4,34 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Result {
-    private List<String> date = new ArrayList<>();
-    private List<Double> value = new ArrayList<>();
-    private String name;
+    private String date;
+    private String grade;
+    private Double value;
 
 
-    public Result(){}
 
-    public List<String> getDate() {
-        return date;
-    }
-
-    public void setDate(List<String> date) {
+    public Result(String date,String grade,Double value){
         this.date = date;
-    }
-
-    public List<Double> getValue() {
-        return value;
-    }
-
-    public void setValue(List<Double> value) {
+        this.grade = grade;
         this.value = value;
     }
 
-    public String getName() {
-        return name;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public String getGrade() {
+        return grade;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.grade = name;
     }
 }

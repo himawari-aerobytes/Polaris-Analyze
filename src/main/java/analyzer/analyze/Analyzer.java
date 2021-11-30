@@ -15,13 +15,17 @@ import java.util.*;
 
 public class Analyzer {
 
-    public static Map<String, Result> analyze(LocalDateTime startDate, LocalDateTime endDate, History history) throws IOException {
+    public static List<Result> analyze(LocalDateTime startDate, LocalDateTime endDate, History history) throws IOException {
         //解析期間を指定．
         final ObjectMapper mapper = new ObjectMapper();
         final Lab lab = history.getLab();
         final List<Member> members= history.getMembers();
 
-        List<Map<String,Object>> result = new ArrayList<>();
+        final List list = new ArrayList();
+
+
+
+
         /**
          * 全てのJSONデータ処理
          */
@@ -112,11 +116,11 @@ public class Analyzer {
             final String end = endDate.getMonthValue()+"月" + endDate.getDayOfMonth()+"日";
             final String date = start+ " ~ " + end;
 
-            result.add()
-            result.put(g,date,percentage);
+            list.add(new Result(g,date,percentage));
+
         }
 
-        return result;
+        return list;
 
     }
 }
