@@ -29,6 +29,8 @@ public class AnalyzerController {
         List<Double> B4Value = new ArrayList<>();
         List<Double> M2Value = new ArrayList<>();
 
+        String title = store.term;
+
 
         for(Map<String, Result> result : results){
            B3Label.add(result.get("B3").getStartDate()+"~"+result.get("B3").getEndDate());
@@ -47,6 +49,9 @@ public class AnalyzerController {
         model.addAttribute("B3Value",B3Value);
         model.addAttribute("B4Value",B4Value);
         model.addAttribute("M2Value",M2Value);
+        model.addAttribute("title",title);
+
+        model.addAttribute("History",history);
 
         return "analyzer";
     }

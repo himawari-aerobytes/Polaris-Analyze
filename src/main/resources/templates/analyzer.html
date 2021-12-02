@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-    <title>Title</title>
+    <title>Fucking App Analyzer</title>
 </head>
 <body>
 hello thymeleaf!
@@ -12,6 +12,7 @@ hello thymeleaf!
 <canvas id="ChartDemo"></canvas>
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
+
     const ctx = document.getElementById("ChartDemo").getContext('2d');
     const ChartDemo = new Chart(ctx, {
         type: 'line',
@@ -47,6 +48,22 @@ hello thymeleaf!
         },
         options: {
             responsive: true,
+            title:{
+                display:true,
+                text: /*[[ ${title} ]]*/
+            },
+            scales: {
+                yAxes: [           // Ｙ軸
+                    {
+                        ticks: {     // 目盛り
+                            min: 0,      // 最小値
+                            // beginAtZero: true でも同じ
+                            max: 100,     // 最大値
+                            stepSize: 10  // 間隔
+                        }
+                    }
+                ]
+            }
         }
     });
     /*]]>*/
