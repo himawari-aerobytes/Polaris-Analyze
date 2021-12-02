@@ -1,26 +1,23 @@
 package web;
 
 import analyzer.analyze.Result;
-import analyzer.analyze.Analyzer;
-import analyzer.History;
-import analyzer.propaties.JPCalendar;
+import analyzer.analyze.ResultsArray;
+import analyzer.analyze.Store;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
-import java.io.IOException;
 import java.util.*;
 
-import static analyzer.analyze.Controller.getResults;
-import static java.lang.System.exit;
+
 
 @Controller
 public class AnalyzerController {
 
     @GetMapping("/")
     public String helloGradleGet(Model model) {
-        final List<Map<String, Result>> results = getResults();
+        Store store = new Store();
         List<String> B3Label = new ArrayList<>();
         List<String> B4Label = new ArrayList<>();
         List<String> M2Label = new ArrayList<>();
@@ -32,14 +29,23 @@ public class AnalyzerController {
         String title = store.term;
 
 
-        for(Map<String, Result> result : results){
-           B3Label.add(result.get("B3").getStartDate()+"~"+result.get("B3").getEndDate());
-           B4Label.add(result.get("B4").getStartDate() );
-           M2Label.add(result.get("M2").getStartDate());
-
-           B3Value.add(result.get("B3").getPercentage());
-           B4Value.add(result.get("B4").getPercentage());
-           M2Value.add(result.get("M2").getPercentage());
+        for(ResultsArray result : store.returnValue){
+            switch (result.getGrade()){
+                case "B3":
+                    B3Label.addAll(result.getDate());
+                    B3Value.addAll(result.getValue());
+                    break;
+                case "B4":
+                    B4Label.addAll(result.getDate());
+                    B4Value.addAll(result.getValue());
+                    break;
+                case "M2":
+                    M2Label.addAll(result.getDate());
+                    M2Value.addAll(result.getValue());
+                    break;
+                default:
+                    break;
+            }
         }
 
         model.addAttribute("B3Label",B3Label);

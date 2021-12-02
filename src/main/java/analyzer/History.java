@@ -18,6 +18,8 @@ public class History {
     private List<Member> members= new ArrayList<>();
     private Lab lab;
 
+    public History(){}
+
     public History(String filename) throws IOException {
         final String PolarisJSON = CSVDeserializer.ReadCSV(filename);
         this.History = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {

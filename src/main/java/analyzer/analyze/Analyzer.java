@@ -4,30 +4,34 @@ import analyzer.History;
 import analyzer.Lab;
 import analyzer.Member;
 import analyzer.propaties.CUIColor;
-import analyzer.propaties.JPCalendar;
+import analyzer.propaties.Cal;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
 
 public class Analyzer {
 
-    public static Map<String, Result> analyze(String startDate, String endDate, History history) throws IOException {
+    public static List<Result> analyze(LocalDateTime startDate, LocalDateTime endDate, History history) throws IOException {
         //解析期間を指定．
-        final Calendar START_DATE = JPCalendar.parseCalendar(startDate);
-        final Calendar END_DATE = JPCalendar.parseCalendar(endDate);
         final ObjectMapper mapper = new ObjectMapper();
         final Lab lab = history.getLab();
         final List<Member> members= history.getMembers();
+
+        final List list = new ArrayList();
+
+
+
 
         /**
          * 全てのJSONデータ処理
          */
 
         for (Map<String, Object> msg : history.getHistory()) {
-            final Calendar createdDate = JPCalendar.parseCalendar((String) msg.get("登録日時"));
+            final LocalDateTime createdDate = Cal.toLocalDateTime((String) msg.get("登録日時"));
             final List<Map<String, String>> readers = mapper.readValue((String) msg.get("既読状態"), new TypeReference<List<Map<String, String>>>(){});
             final String messageType = (String) msg.get("形態");
             final String sender = (String) msg.get("sender");
@@ -39,7 +43,7 @@ public class Analyzer {
              * 0 : a == b
              * 1 : a > b
              */
-            if (!((createdDate.compareTo(START_DATE) >= 0) && (createdDate.compareTo(END_DATE) <= 0))) {
+            if (!((createdDate.compareTo(startDate)>=0) && (createdDate.compareTo(endDate)<=0))) {
                 continue;
             }
 
@@ -61,7 +65,7 @@ public class Analyzer {
 
                 if (readCondition.equals("既読")) {
 
-                    final Calendar readDate = JPCalendar.parseCalendar(reader.get("response_result_created"));
+                    final LocalDateTime readDate = Cal.toLocalDateTime(reader.get("response_result_created"));
 
                     /**
                      * 既読日時の絞り込み
@@ -70,7 +74,7 @@ public class Analyzer {
                      * 0 : a == b
                      * 1 : a > b
                      */
-                    if (!((readDate.compareTo(START_DATE) >= 0) && (readDate.compareTo(END_DATE) <= 0))) {
+                    if (!((readDate.compareTo(startDate) >= 0) && (readDate.compareTo(endDate) <= 0))) {
                         members.stream()
                                 .filter(x -> x.getNumber().equals(reader.get("t_device_mng_id")))
                                 .forEach(x -> {
@@ -101,7 +105,6 @@ public class Analyzer {
             }
         }
 
-        Map<String, Result> result = new HashMap<>();
         List<String> grade = new ArrayList<>();
         String[] arrayGrade = {"B3","B4","M2"};
         Collections.addAll(grade,arrayGrade);
@@ -109,14 +112,15 @@ public class Analyzer {
         for(String g:grade){
             //順序依存
             final Double percentage = lab.calcGradePercentage(g);
-            final int allRead = lab.getAllRead().get(g);
-            final int allReceive = lab.getAllReceive().get(g);
-            final String start = (START_DATE.get(Calendar.MONTH)+1)+"月" + START_DATE.get(Calendar.DAY_OF_MONTH)+"日";
-            final String end = (END_DATE.get(Calendar.MONTH)+1)+"月" + END_DATE.get(Calendar.DAY_OF_MONTH)+"日";
-            result.put(g,new Result(start,end,g,allRead,allReceive,percentage));
+            final String start = startDate.getMonthValue()+"月" + startDate.getDayOfMonth()+"日";
+            final String end = endDate.getMonthValue()+"月" + endDate.getDayOfMonth()+"日";
+            final String date = start+ " ~ " + end;
+
+            list.add(new Result(date,g,percentage));
+
         }
 
-        return result;
+        return list;
 
     }
 }
