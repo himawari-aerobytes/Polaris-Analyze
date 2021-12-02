@@ -16,6 +16,7 @@ public class Store {
     public ResultsArray B3 = new ResultsArray();
     public ResultsArray B4 = new ResultsArray();
     public ResultsArray M2 = new ResultsArray();
+    public String term;
 
 
     public Store() {
@@ -23,6 +24,9 @@ public class Store {
 
         final LocalDateTime StartDate = toLocalDateTime("2021-09-26 00:00:00");
         final LocalDateTime EndDate = toLocalDateTime("2021-11-24 23:59:59");
+
+        this.term ="既読率の推移(" +StartDate.getMonthValue()+"/"+StartDate.getDayOfMonth()+" ~ "+EndDate.getMonthValue()+"/"+EndDate.getDayOfMonth()+")";
+
 
         List<List<Result>> results = new ArrayList<>();
 
