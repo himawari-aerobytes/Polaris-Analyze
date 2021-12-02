@@ -1,5 +1,6 @@
 package web;
 
+import analyzer.History;
 import analyzer.analyze.Result;
 import analyzer.analyze.ResultsArray;
 import analyzer.analyze.Store;
@@ -17,7 +18,10 @@ public class AnalyzerController {
 
     @GetMapping("/")
     public String helloGradleGet(Model model) {
-        Store store = new Store();
+        History history = new History("source.csv");
+        Store store = new Store(history);
+
+
         List<String> B3Label = new ArrayList<>();
         List<String> B4Label = new ArrayList<>();
         List<String> M2Label = new ArrayList<>();
@@ -57,7 +61,9 @@ public class AnalyzerController {
         model.addAttribute("M2Value",M2Value);
         model.addAttribute("title",title);
 
-        model.addAttribute("History",history);
+        model.addAttribute("history",history.getHistory());
+
+
 
         return "analyzer";
     }

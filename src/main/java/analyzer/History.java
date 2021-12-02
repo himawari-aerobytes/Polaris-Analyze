@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.System.exit;
+
 public class History {
     final private ObjectMapper mapper = new ObjectMapper();
     private List<Map<String, Object>> History;
@@ -20,15 +22,20 @@ public class History {
 
     public History(){}
 
-    public History(String filename) throws IOException {
-        final String PolarisJSON = CSVDeserializer.ReadCSV(filename);
-        this.History = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {
-        });
+    public History(String filename) {
+        String PolarisJSON;
 
-        this.MembersFile = new FileInputStream("Members.json");
-        this.MembersJSON = mapper.readValue(MembersFile, new TypeReference<List<Map<String, String>>>() {
-        });
-
+        try{
+            PolarisJSON = CSVDeserializer.ReadCSV(filename);
+            this.History = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {
+            });
+            this.MembersFile = new FileInputStream("Members.json");
+            this.MembersJSON = mapper.readValue(MembersFile, new TypeReference<List<Map<String, String>>>() {
+            });
+        }catch (IOException e){
+           e.printStackTrace();
+           exit(-1);
+        }
 
         for(Map<String,String> member : MembersJSON ){
             final String number = member.get("number");

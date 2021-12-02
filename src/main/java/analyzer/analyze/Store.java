@@ -19,28 +19,14 @@ public class Store {
     public String term;
 
 
-    public Store() {
-        final String filename = "source.csv";
+    public Store(History history) {
+        //final String filename = "source.csv";
 
         final LocalDateTime StartDate = toLocalDateTime("2021-09-26 00:00:00");
         final LocalDateTime EndDate = toLocalDateTime("2021-11-24 23:59:59");
 
         this.term ="既読率の推移(" +StartDate.getMonthValue()+"/"+StartDate.getDayOfMonth()+" ~ "+EndDate.getMonthValue()+"/"+EndDate.getDayOfMonth()+")";
-
-
         List<List<Result>> results = new ArrayList<>();
-
-
-
-        History history = new History();
-
-        try {
-            history = new History(filename);
-        } catch (IOException e) {
-            e.printStackTrace();
-            exit(-1);
-        }
-
 
         LocalDateTime nextStart = StartDate;
         LocalDateTime nextEnd = nextOrSame(StartDate,"SATURDAY");
