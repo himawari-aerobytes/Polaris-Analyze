@@ -15,16 +15,27 @@ import java.util.*;
 
 public class Analyzer {
 
+    private static void addResponse(List<Member> members, String status, String messageType, Map<String, String> reader){
+        members.stream()
+                .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
+                .forEach(x -> {
+                    x.getCounter().addReceive(messageType);
+                    if(status.equals("既読")){
+                        System.out.println("既読: "+x.getName()+" "+reader.get("response_result_created"));
+                        x.getCounter().addRead(messageType);
+                    }else{
+                        System.out.println("未読: "+x.getName());
+                    }
+                });
+
+    }
+
     public static List<Result> analyze(LocalDateTime startDate, LocalDateTime endDate, History history) throws IOException {
         //解析期間を指定．
         final ObjectMapper mapper = new ObjectMapper();
         final Lab lab = history.getLab();
         final List<Member> members= history.getMembers();
-
         final List list = new ArrayList();
-
-
-
 
         /**
          * 全てのJSONデータ処理
@@ -64,9 +75,7 @@ public class Analyzer {
                 }
 
                 if (readCondition.equals("既読")) {
-
                     final LocalDateTime readDate = Cal.toLocalDateTime(reader.get("response_result_created"));
-
                     /**
                      * 既読日時の絞り込み
                      * a.compareTo(b)
@@ -75,32 +84,13 @@ public class Analyzer {
                      * 1 : a > b
                      */
                     if (!((readDate.compareTo(startDate) >= 0) && (readDate.compareTo(endDate) <= 0))) {
-                        members.stream()
-                                .filter(x -> x.getNumber().equals(reader.get("t_device_mng_id")))
-                                .forEach(x -> {
-                                    x.getCounter().addReceive(messageType);
-                                    System.out.println("未読: "+x.getName());
-                                });
+                        addResponse(members,"未読",messageType,reader);
                     }else{
-                        members.stream()
-                                .filter(x -> reader.get("t_device_mng_id").equals(x.getNumber()))
-                                .forEach(x -> {
-                                    System.out.println("既読: "+x.getName()+" "+reader.get("response_result_created"));
-                                    x.getCounter().addRead(messageType);
-                                    x.getCounter().addReceive(messageType);
-                                });
-
+                        addResponse(members,"既読",messageType,reader);
                     }
-
                 }
-
                 if (readCondition.equals("未読")) {
-                    members.stream()
-                            .filter(x -> x.getNumber().equals(reader.get("t_device_mng_id")))
-                            .forEach(x -> {
-                                x.getCounter().addReceive(messageType);
-                                System.out.println("未読: "+x.getName());
-                            });
+                    addResponse(members,"未読",messageType,reader);
                 }
             }
         }
