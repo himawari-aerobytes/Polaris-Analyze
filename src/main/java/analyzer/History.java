@@ -14,7 +14,7 @@ import static java.lang.System.exit;
 
 public class History {
     final private ObjectMapper mapper = new ObjectMapper();
-    private List<Map<String, Object>> History;
+    private List<Message> History;
     private FileInputStream MembersFile;
     private List<Map<String, String>> MembersJSON;
     private List<Member> members= new ArrayList<>();
@@ -23,32 +23,23 @@ public class History {
     public History(){}
 
     public History(String filename) {
-        String PolarisJSON;
 
         try{
-            PolarisJSON = CSVDeserializer.ReadCSV(filename);
-            this.History = mapper.readValue(PolarisJSON, new TypeReference<List<Map<String, Object>>>() {
-            });
+            this.History = CSVDeserializer.ReadCSV(filename);
             this.MembersFile = new FileInputStream("Members.json");
-            this.MembersJSON = mapper.readValue(MembersFile, new TypeReference<List<Map<String, String>>>() {
+            this.members = mapper.readValue(MembersFile, new TypeReference<List<Member>>() {
             });
         }catch (IOException e){
            e.printStackTrace();
            exit(-1);
         }
 
-        for(Map<String,String> member : MembersJSON ){
-            final String number = member.get("number");
-            final String grade = member.get("grade");
-            final String name = member.get("name");
-            members.add(new Member(name,number,grade));
-        }
-
-        lab = new Lab(members);
+        lab = new Lab(this.members);
+        System.out.println(lab.getMembers().get(0));
 
     }
 
-    public List<Map<String, Object>> getHistory() {
+    public List<Message> getHistory() {
         return History;
     }
 

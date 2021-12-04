@@ -16,10 +16,9 @@ public class Lab {
      * @param members 研究室全メンバーの配列
      */
     public Lab(List<Member> members){
-        for(Member member: members){
-            this.members.add(member);
-        }
+        this.members.addAll(members);
     }
+
     public List<Member> getMembers() {
         return members;
     }
@@ -43,9 +42,6 @@ public class Lab {
     public void setAllReceive(Map<String, Integer> allReceive) {
         this.allReceive = allReceive;
     }
-
-
-
 
     public Optional<Member> searchMember(String name){
         return this.members.stream()
@@ -93,6 +89,17 @@ public class Lab {
 
         return Double.valueOf(value);
 
+    }
+
+    public boolean isExits(String id){
+        Optional<Member> member = this.members.stream()
+                .filter(x -> x.getNumber().equals(id))
+                .findFirst();
+
+        if(member.isPresent()){
+            return true;
+        }
+        return false;
     }
 
 

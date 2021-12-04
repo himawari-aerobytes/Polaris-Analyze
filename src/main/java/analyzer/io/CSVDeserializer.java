@@ -13,7 +13,7 @@ import java.util.List;
  * CSVをJSONに変換します
  */
 public class CSVDeserializer {
-    public static String ReadCSV(String path) throws IOException{
+    public static List<Message> ReadCSV(String path) throws IOException{
         final ObjectMapper objectMapper = new ObjectMapper();
         final CsvMapper mapper = new CsvMapper();
 
@@ -28,8 +28,8 @@ public class CSVDeserializer {
 
             MappingIterator<Message> it = mapper.readerFor(Message.class).with(schema).readValues(br);
             List<Message> messageList = it.readAll();
-
-            return objectMapper.writeValueAsString(messageList);
+            return messageList;
+            //return objectMapper.writeValueAsString(messageList);
 
         }catch (IOException e){
             throw new ExportException("読み込み時にエラーが発生しました\n"+e);

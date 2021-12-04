@@ -9,7 +9,7 @@ import java.util.*;
 
 import static analyzer.propaties.Cal.nextOrSame;
 import static analyzer.propaties.Cal.toLocalDateTime;
-import static java.lang.System.exit;
+
 
 public class Store {
     public List<ResultsArray> returnValue = new ArrayList<>();
@@ -20,10 +20,9 @@ public class Store {
 
 
     public Store(History history) {
-        //final String filename = "source.csv";
 
-        final LocalDateTime StartDate = toLocalDateTime("2021-09-26 00:00:00");
-        final LocalDateTime EndDate = toLocalDateTime("2021-11-24 23:59:59");
+        final LocalDateTime StartDate = toLocalDateTime("2021-07-16 00:00:00");
+        final LocalDateTime EndDate = toLocalDateTime("2021-12-03 23:59:59");
 
         this.term ="既読率の推移(" +StartDate.getMonthValue()+"/"+StartDate.getDayOfMonth()+" ~ "+EndDate.getMonthValue()+"/"+EndDate.getDayOfMonth()+")";
         List<List<Result>> results = new ArrayList<>();
@@ -57,7 +56,6 @@ public class Store {
 
         for(List<Result> result : results){
             for(Result x : result){
-                System.out.println(x.getGrade());
 
                switch (x.getGrade()){
                    case "B3":
@@ -90,8 +88,6 @@ public class Store {
         returnValue.add(B4);
         returnValue.add(M2);
 
-
-        //return (List<ResultsArray>) returnValue.clone();
     }
 
 

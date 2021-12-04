@@ -3,18 +3,95 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="https://unpkg.com/chartjs-plugin-colorschemes"></script>
     <title>Fucking App Analyzer</title>
+
 </head>
 <body>
-hello thymeleaf!
-
-<canvas id="ChartDemo"></canvas>
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
+    const labels = ["1分以内","5分以内","10分以内","15分以内","20分以内","25分以内","30分以内","60分以内","60分より長い"];
+    const readChart = (id,data,labels)=>{
+        const chart = new Chart(document.getElementById(id).getContext('2d'), {
+            type: 'bar',
+            data: {
+                // コントローラーで格納したlabelを変数式で取り出すだけ。
+                labels: labels,
+                datasets: [
+                    {
+                        label: "既読時間",
 
-    console.log([[${history}]]);
+                        lineTension: 0,
+                        fill: false,
+                        // 上記と同様、pointを変数式で取り出しているだけです。
+                        data: data
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [           // Ｙ軸
+                        {
+                            ticks: {     // 目盛り
+                                min: 0,      // 最小値
+                                // beginAtZero: true でも同じ
+                                max: 30,     // 最大値
+                                stepSize: 10  // 間隔
+                            }
+                        }
+                    ]
+                },
+                plugins: {
+                    colorschemes: {
+                        scheme: 'brewer.Paired12'
+                    }
+                }
+            }
+        });
+    }
+    /*]]>*/
+</script>
+
+
+<div class="container">
+    <p>全体の既読率 [[${title}]]</p>
+    <canvas id="ChartDemo"></canvas>
+    <p>メッセージ</p>
+    <div th:each="msg : ${messageList}" th:with="loop=0">
+        <p class="p-2 bg-info text-light" th:text="${msg.type}"></p>
+        <p class="border-bottom" th:text="'送信者: '+${msg.sender}"></p>
+        <p class="border-bottom">ヘッドライン</p>
+        <p th:text="${msg.headline}"></p>
+
+        <a class="text-info" data-toggle="collapse" th:href="'#read'+${msg.id}">
+            既読状態
+        </a>
+        <div class="collapse" th:id="'read'+${msg.id}">
+
+            <canvas th:id="canvas+${msg.id}"></canvas>
+            <script>
+                /*<![CDATA[*/
+
+                readChart("canvas[[${msg.id}]]",[[ ${msg.graph.value} ]],labels);
+                /*]]>*/
+            </script>
+            <span th:each="reader : ${msg.response_body}">
+                <p th:text="${reader}"></p>
+            </span>
+        </div>
+
+        <p class="text-right text-black-50" th:text="${msg.createdDate}"></p>
+    </div>
+</div>
+
+
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
 
     const ctx = document.getElementById("ChartDemo").getContext('2d');
     const ChartDemo = new Chart(ctx, {
@@ -51,8 +128,8 @@ hello thymeleaf!
         },
         options: {
             responsive: true,
-            title:{
-                display:true,
+            title: {
+                display: true,
                 text: /*[[ ${title} ]]*/
             },
             scales: {
@@ -67,8 +144,8 @@ hello thymeleaf!
                     }
                 ]
             },
-            plugins:{
-                colorschemes:{
+            plugins: {
+                colorschemes: {
                     scheme: 'brewer.Paired12'
                 }
             }
