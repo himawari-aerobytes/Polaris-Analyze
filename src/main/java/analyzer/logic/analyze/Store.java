@@ -1,6 +1,6 @@
-package analyzer.analyze;
+package analyzer.logic.analyze;
 
-import analyzer.History;
+import analyzer.logic.History;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -9,24 +9,23 @@ import java.util.*;
 
 import static analyzer.propaties.Cal.nextOrSame;
 import static analyzer.propaties.Cal.toLocalDateTime;
-import static java.lang.System.exit;
+
 
 public class Store {
-    public List<ResultsArray> returnValue = new ArrayList<>();
-    public ResultsArray B3 = new ResultsArray();
-    public ResultsArray B4 = new ResultsArray();
-    public ResultsArray M2 = new ResultsArray();
+    public List<Results> returnValue = new ArrayList<>();
+    public Results B3 = new Results();
+    public Results B4 = new Results();
+    public Results M2 = new Results();
     public String term;
 
 
     public Store(History history) {
-        //final String filename = "source.csv";
 
-        final LocalDateTime StartDate = toLocalDateTime("2021-09-26 00:00:00");
-        final LocalDateTime EndDate = toLocalDateTime("2021-11-24 23:59:59");
+        final LocalDateTime StartDate = toLocalDateTime("2021-07-16 00:00:00");
+        final LocalDateTime EndDate = toLocalDateTime("2021-12-03 23:59:59");
 
         this.term ="既読率の推移(" +StartDate.getMonthValue()+"/"+StartDate.getDayOfMonth()+" ~ "+EndDate.getMonthValue()+"/"+EndDate.getDayOfMonth()+")";
-        List<List<Result>> results = new ArrayList<>();
+        List<List<Map<String, Object>>> results = new ArrayList<>();
 
         LocalDateTime nextStart = StartDate;
         LocalDateTime nextEnd = nextOrSame(StartDate,"SATURDAY");
@@ -55,22 +54,20 @@ public class Store {
 
         }
 
-        for(List<Result> result : results){
-            for(Result x : result){
-                System.out.println(x.getGrade());
-
-               switch (x.getGrade()){
+        for(List<Map<String,Object>> result : results){
+            for(Map<String,Object> x : result){
+               switch ((String) x.get("grade")){
                    case "B3":
-                       B3.addValue(x.getValue());
-                       B3.addDate(x.getDate());
+                       B3.addValue((Double) x.get("percentage"));
+                       B3.addKey((String) x.get("date"));
                        break;
                    case "B4":
-                       B4.addValue(x.getValue());
-                       B4.addDate(x.getDate());
+                       B4.addValue((Double) x.get("percentage"));
+                       B4.addKey((String) x.get("date"));
                        break;
                    case "M2":
-                       M2.addValue(x.getValue());
-                       M2.addDate(x.getDate());
+                       M2.addValue((Double) x.get("percentage"));
+                       M2.addKey((String) x.get("date"));
                        break;
                    default:
                        break;
@@ -90,8 +87,6 @@ public class Store {
         returnValue.add(B4);
         returnValue.add(M2);
 
-
-        //return (List<ResultsArray>) returnValue.clone();
     }
 
 
