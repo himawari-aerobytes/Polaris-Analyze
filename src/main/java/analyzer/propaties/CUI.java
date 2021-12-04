@@ -1,6 +1,6 @@
 package analyzer.propaties;
 
-public class CUIColor {
+public class CUI {
     public static final String color_cyan   = "\u001b[00;36m";
     public static final String end    = "\u001b[00m";
     public static final String color_red    = "\u001b[00;31m";

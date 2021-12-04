@@ -1,6 +1,6 @@
 package analyzer;
 
-import analyzer.propaties.CUIColor;
+import analyzer.propaties.CUI;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ public class Counter {
     private int send = 0;
 
     private static void exceptionMessageType(String messageType){
-        CUIColor.println("WARN:"+messageType+"は既定のカテゴリではありません","color_red");
+        CUI.println("WARN:"+messageType+"は既定のカテゴリではありません","color_red");
     }
 
     /**
