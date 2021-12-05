@@ -1,4 +1,4 @@
-package analyzer;
+package analyzer.analyze.logic;
 
 import analyzer.io.CSVDeserializer;
 import com.fasterxml.jackson.core.type.TypeReference;

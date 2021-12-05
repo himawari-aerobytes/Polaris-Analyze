@@ -1,6 +1,6 @@
 package analyzer.analyze;
 
-import analyzer.History;
+import analyzer.analyze.logic.History;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

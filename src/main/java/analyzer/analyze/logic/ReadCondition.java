@@ -1,4 +1,4 @@
-package analyzer;
+package analyzer.analyze.logic;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

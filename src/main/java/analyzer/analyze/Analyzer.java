@@ -1,6 +1,6 @@
 package analyzer.analyze;
 
-import analyzer.*;
+import analyzer.analyze.logic.*;
 import analyzer.propaties.CUI;
 import analyzer.propaties.Cal;
 
@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Analyzer {
 
-    private static void addResponse(List<Member> members, String status, String messageType, ReadCondition reader,Message message){
+    private static void addResponse(List<Member> members, String status, String messageType, ReadCondition reader, Message message){
         members.stream()
                 .filter(x -> reader.getT_device_mng_id().equals(x.getNumber()))
                 .forEach(x -> {

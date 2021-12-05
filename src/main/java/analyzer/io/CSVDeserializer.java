@@ -1,6 +1,6 @@
 package analyzer.io;
 
-import analyzer.Message;
+import analyzer.analyze.logic.Message;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;

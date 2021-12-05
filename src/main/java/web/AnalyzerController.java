@@ -1,7 +1,7 @@
 package web;
 
 import analyzer.propaties.Graph;
-import analyzer.History;
+import analyzer.analyze.logic.History;
 import analyzer.analyze.ResultsArray;
 import analyzer.analyze.Store;
 import org.springframework.stereotype.Controller;
