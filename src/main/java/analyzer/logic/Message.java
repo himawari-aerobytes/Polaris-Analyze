@@ -1,4 +1,4 @@
-package analyzer.analyze.logic;
+package analyzer.logic;
 
 import analyzer.propaties.Cal;
 import analyzer.propaties.Graph;

@@ -1,4 +1,4 @@
-package analyzer.analyze.logic;
+package analyzer.logic;
 
 import com.fasterxml.jackson.annotation.*;
 
