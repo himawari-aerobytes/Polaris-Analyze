@@ -1,8 +1,7 @@
-package analyzer.propaties;
+package analyzer.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Graph<K,V> {
     private List<K> key = new ArrayList<>();

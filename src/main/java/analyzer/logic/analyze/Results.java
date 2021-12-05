@@ -1,6 +1,6 @@
 package analyzer.logic.analyze;
 
-import analyzer.propaties.Graph;
+import analyzer.Utility.Graph;
 
 import java.util.List;
 

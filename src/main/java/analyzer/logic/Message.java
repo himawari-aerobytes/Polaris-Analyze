@@ -1,7 +1,7 @@
 package analyzer.logic;
 
-import analyzer.propaties.Cal;
-import analyzer.propaties.Graph;
+import analyzer.Utility.Cal;
+import analyzer.Utility.Graph;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

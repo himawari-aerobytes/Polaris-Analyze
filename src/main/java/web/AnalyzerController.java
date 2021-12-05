@@ -1,6 +1,6 @@
 package web;
 
-import analyzer.propaties.Graph;
+import analyzer.Utility.Graph;
 import analyzer.logic.History;
 import analyzer.logic.analyze.Results;
 import analyzer.logic.analyze.Store;
