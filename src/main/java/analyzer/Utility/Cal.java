@@ -1,4 +1,4 @@
-package analyzer.propaties;
+package analyzer.Utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

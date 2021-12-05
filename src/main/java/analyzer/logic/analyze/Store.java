@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import static analyzer.propaties.Cal.nextOrSame;
-import static analyzer.propaties.Cal.toLocalDateTime;
+import static analyzer.Utility.Cal.nextOrSame;
+import static analyzer.Utility.Cal.toLocalDateTime;
 
 
 public class Store {

@@ -1,8 +1,8 @@
 package analyzer.logic.analyze;
 
 import analyzer.logic.*;
-import analyzer.propaties.CUI;
-import analyzer.propaties.Cal;
+import analyzer.Utility.CUI;
+import analyzer.Utility.Cal;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

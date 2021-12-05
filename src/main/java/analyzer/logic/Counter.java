@@ -1,6 +1,6 @@
 package analyzer.logic;
 
-import analyzer.propaties.CUI;
+import analyzer.Utility.CUI;
 
 import java.util.*;
 

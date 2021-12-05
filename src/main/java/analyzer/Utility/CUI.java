@@ -1,4 +1,4 @@
-package analyzer.propaties;
+package analyzer.Utility;
 
 public class CUI {
     public static final String color_cyan   = "\u001b[00;36m";
