@@ -1,4 +1,4 @@
-package analyzer.analyze;
+package analyzer.logic.analyze;
 
 import analyzer.logic.*;
 import analyzer.propaties.CUI;
@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * 本文の解析を行います
+ */
 public class Analyzer {
 
-    public static List<Result> analyze(LocalDateTime startDate, LocalDateTime endDate, History history) throws IOException {
+    public static List<Map<String, Object>> analyze(LocalDateTime startDate, LocalDateTime endDate, History history) throws IOException {
         final List<Member> members= history.getMembers();
         final List list = new ArrayList();
         Map<String,Integer> allRead=new HashMap<>();
@@ -86,20 +89,31 @@ public class Analyzer {
         List<String> grade = new ArrayList<>();
         String[] arrayGrade = {"B3","B4","M2"};
         Collections.addAll(grade,arrayGrade);
+        List<Map<String,Object>> results=new ArrayList<>();
 
         for(String g:grade){
             //順序依存
+            HashMap<String,Object> map = new HashMap<>();
             final Double percentage = calcGradePercentage(g,members,allRead,allReceive);
             final String start = startDate.getMonthValue()+"月" + startDate.getDayOfMonth()+"日";
             final String end = endDate.getMonthValue()+"月" + endDate.getDayOfMonth()+"日";
             final String date = start+ " ~ " + end;
-            list.add(new Result(date,g,percentage));
+            map.put("percentage",percentage);
+            map.put("date",date);
+            map.put("grade",g);
+            results.add(map);
         }
 
-        return list;
+        return results;
 
     }
 
+    /**
+     * メンバーが存在するかどうか
+     * @param members
+     * @param t_device_mng_id
+     * @return 存在
+     */
     private static boolean isMemberExists(List<Member> members, String t_device_mng_id) {
         Optional<Member> member = members.stream()
                 .filter(x -> x.getNumber().equals(t_device_mng_id))
@@ -111,6 +125,14 @@ public class Analyzer {
         return false;
     }
 
+    /**
+     * 既読率の計算
+     * @param grade 学年
+     * @param members 研究室メンバー
+     * @param allRead 全体の既読
+     * @param allReceive 全体の受信
+     * @return
+     */
     private static Double calcGradePercentage(String grade,List<Member> members,Map<String,Integer> allRead,Map<String,Integer> allReceive){
         int Read = 0;
         int Receive = 0;
@@ -143,6 +165,14 @@ public class Analyzer {
 
     }
 
+    /**
+     * 既読状況の判断
+     * @param members
+     * @param status 既読or未読
+     * @param messageType 形態
+     * @param reader 既読状態
+     * @param message 判断するメッセージ
+     */
     private static void addResponse(List<Member> members, String status, String messageType, ReadCondition reader, Message message){
         members.stream()
                 .filter(x -> reader.getT_device_mng_id().equals(x.getNumber()))
