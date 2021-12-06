@@ -93,10 +93,6 @@ public class Member {
             return false;
         }
         Member member = (Member) obj;
-
-        System.out.println(member.getNumber() == this.getNumber());
-
-
         return member.getNumber() == this.getNumber();
     }
 
