@@ -43,4 +43,8 @@ public class Graph<K,V> {
         this.value = value;
     }
 
+    public void setValue(int index,V value){
+        this.value.set(index,value);
+    }
+
 }
