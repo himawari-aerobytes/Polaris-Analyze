@@ -98,7 +98,7 @@ public class Counter {
     }
 
     public void addSend(){
-        this.send++;
+        ++this.send;
     }
 
     public int getSend(){

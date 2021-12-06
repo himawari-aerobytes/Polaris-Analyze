@@ -14,9 +14,7 @@ import static java.lang.System.exit;
 public class History {
     final private ObjectMapper mapper = new ObjectMapper();
     private List<Message> History;
-    private FileInputStream MembersFile;
     private List<Member> members= new ArrayList<>();
-    //private Lab lab;
 
     public History(){}
 
@@ -33,8 +31,6 @@ public class History {
            exit(-1);
         }
 
-        //lab = new Lab(this.members);
-        //System.out.println(lab.getMembers().get(0));
 
     }
 
@@ -42,9 +38,6 @@ public class History {
         return History;
     }
 
-    //public Lab getLab() {
-    //    return lab;
-    //}
     public List<Member> getMembers(){
         return members;
     }

@@ -14,8 +14,52 @@
 <body>
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
-    const labels = ["1分以内","5分以内","10分以内","15分以内","20分以内","25分以内","30分以内","60分以内","60分より長い"];
+    const ReadLabels = ["1分以内","5分以内","10分以内","15分以内","20分以内","25分以内","30分以内","60分以内","60分より長い"];
     const readChart = (id,data,labels)=>{
+        const chart = new Chart(document.getElementById(id).getContext('2d'), {
+            type: 'bar',
+            data: {
+                // コントローラーで格納したlabelを変数式で取り出すだけ。
+                labels: labels,
+                datasets: [
+                    {
+                        label: "既読時間",
+
+                        lineTension: 0,
+                        fill: false,
+                        // 上記と同様、pointを変数式で取り出しているだけです。
+                        data: data
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [           // Ｙ軸
+                        {
+                            ticks: {     // 目盛り
+                                min: 0,      // 最小値
+                                // beginAtZero: true でも同じ
+                                max: 30,     // 最大値
+                                stepSize: 10  // 間隔
+                            }
+                        }
+                    ]
+                },
+                plugins: {
+                    colorschemes: {
+                        scheme: 'brewer.Paired12'
+                    }
+                }
+            }
+        });
+    }
+    /*]]>*/
+</script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    const SendLabels = /*[[${send.key}]]*/;
+    const sendChart = (id,data,labels)=>{
         const chart = new Chart(document.getElementById(id).getContext('2d'), {
             type: 'bar',
             data: {
@@ -61,6 +105,12 @@
 <div class="container">
     <p>全体の既読率 [[${title}]]</p>
     <canvas id="ChartDemo"></canvas>
+    <canvas id="sender"></canvas>
+    <script>
+        /*<![CDATA[*/
+            sendChart("sender",[[${send.value}]],SendLabels);
+        /*]]>*/
+    </script>
     <p>メッセージ</p>
     <div th:each="msg : ${messageList}" th:with="loop=0">
         <p class="p-2 bg-info text-light" th:text="${msg.type}"></p>
@@ -76,8 +126,7 @@
             <canvas th:id="canvas+${msg.id}"></canvas>
             <script>
                 /*<![CDATA[*/
-
-                readChart("canvas[[${msg.id}]]",[[ ${msg.graph.value} ]],labels);
+                readChart("canvas[[${msg.id}]]",[[ ${msg.graph.value} ]],ReadLabels);
                 /*]]>*/
             </script>
             <span th:each="reader : ${msg.response_body}">

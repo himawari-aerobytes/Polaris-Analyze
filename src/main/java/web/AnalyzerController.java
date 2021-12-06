@@ -2,6 +2,7 @@ package web;
 
 import analyzer.Utility.Graph;
 import analyzer.logic.History;
+import analyzer.logic.Member;
 import analyzer.logic.analyze.Results;
 import analyzer.logic.analyze.Store;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ public class AnalyzerController {
         Graph<String,Double> B3 = new Graph<>();
         Graph<String,Double> B4 = new Graph<>();
         Graph<String,Double> M2 = new Graph<>();
+        Graph<String,Integer> send = new Graph<>();
 
         String title = store.term;
 
@@ -44,6 +46,11 @@ public class AnalyzerController {
             }
         }
 
+        for(Member member : history.getMembers()){
+            send.addKey(member.getName());
+            send.addValue(member.getCounter().getSend());
+        }
+
         model.addAttribute("B3Label",B3.getKey());
         model.addAttribute("B4Label",B4.getKey());
         model.addAttribute("M2Label",M2.getKey());
@@ -53,8 +60,8 @@ public class AnalyzerController {
         model.addAttribute("M2Value",M2.getValue());
         model.addAttribute("title",title);
 
-
         model.addAttribute("messageList",history.getHistory());
+        model.addAttribute("send",send);
 
         return "analyzer";
     }
