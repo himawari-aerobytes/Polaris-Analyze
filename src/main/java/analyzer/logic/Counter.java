@@ -8,7 +8,8 @@ public class Counter {
     private final String[] CATEGORIES = {"ゼミ入退室連絡", "ゼミ緊急", "GR連絡", "一般", "資料作成連絡", "GR緊急", "共通連絡", "共通緊急","その他"};
     private Map<String,Integer> receive = new HashMap<String,Integer>();
     private Map<String,Integer> read = new HashMap<String,Integer>();
-    private int send = 0;
+    private List<Integer> send = new ArrayList<>();
+    private int index =0;
 
     private static void exceptionMessageType(String messageType){
         CUI.println("WARN:"+messageType+"は既定のカテゴリではありません","color_red");
@@ -20,7 +21,7 @@ public class Counter {
      */
     public Counter(){
         this.Reset();
-
+        this.send.add(0);
     }
 
     public void Reset(){
@@ -31,7 +32,6 @@ public class Counter {
         for(String CATEGORY : CATEGORIES){
             this.read.put(CATEGORY,0);
         }
-        this.send = 0;
     }
 
     /**
@@ -96,12 +96,24 @@ public class Counter {
         }
 
     }
-
-    public void addSend(){
-        this.send++;
+    public void next(){
+        this.index++;
+        this.send.add(0);
+    }
+    public void setIndex(int index){
+        this.index = index;
     }
 
-    public int getSend(){
+    public int getIndex(){
+        return this.index;
+    }
+
+    public void addSend(){
+        final int increment = 1+send.get(index).intValue();
+        send.set(index,increment);
+    }
+
+    public List<Integer> getSend(){
         return this.send;
     }
 

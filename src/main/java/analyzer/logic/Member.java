@@ -87,18 +87,12 @@ public class Member {
     public boolean equals(Object obj){
 
         if(obj == this){
-            System.out.println("同一オブジェクト");
             return true;
         }
         if(!(obj instanceof Member)){
-            System.out.println("非同一オブジェクト");
             return false;
         }
         Member member = (Member) obj;
-
-        System.out.println(member.getNumber() == this.getNumber());
-
-
         return member.getNumber() == this.getNumber();
     }
 

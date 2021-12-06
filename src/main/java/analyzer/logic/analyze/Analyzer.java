@@ -1,5 +1,6 @@
 package analyzer.logic.analyze;
 
+import analyzer.Utility.Graph;
 import analyzer.logic.*;
 import analyzer.Utility.CUI;
 import analyzer.Utility.Cal;
@@ -13,9 +14,8 @@ import java.util.*;
  */
 public class Analyzer {
 
-    public static List<Map<String, Object>> analyze(LocalDateTime startDate, LocalDateTime endDate, History history) throws IOException {
+    public static List<Map<String, Object>> analyze(LocalDateTime startDate, LocalDateTime endDate, History history,List<Graph<String,Integer>> send) throws IOException {
         final List<Member> members= history.getMembers();
-        final List list = new ArrayList();
         Map<String,Integer> allRead=new HashMap<>();
         Map<String,Integer> allReceive= new HashMap<>();
 
@@ -34,6 +34,7 @@ public class Analyzer {
             }
 
             CUI.println(msg.getCreatedDate()+" "+msg.getType()+" "+msg.getSender(),"bg_red");
+
 
             //senderカウント
             members.stream()
@@ -98,7 +99,7 @@ public class Analyzer {
             final String start = startDate.getMonthValue()+"月" + startDate.getDayOfMonth()+"日";
             final String end = endDate.getMonthValue()+"月" + endDate.getDayOfMonth()+"日";
             final String date = start+ " ~ " + end;
-            map.put("percentage",percentage);
+            map.put("percentage",round(percentage,1));
             map.put("date",date);
             map.put("grade",g);
             results.add(map);
@@ -143,7 +144,7 @@ public class Analyzer {
             if(grade.equals(member.getGrade())){
                 Receive += member.getCounter().getAllReceived();
                 Read += member.getCounter().getAllRead();
-                System.out.println(member.getName()+"::"+member.getCounter().getAllRead()+"||"+member.getCounter().getAllReceived()+"--"+member.getCounter().getSend());
+                System.out.println(member.getName()+"::"+member.getCounter().getAllRead()+"||"+member.getCounter().getAllReceived()+"--"+member.getCounter().getSend().get(member.getCounter().getIndex()));
             }
 
         }
@@ -164,6 +165,15 @@ public class Analyzer {
         return Double.valueOf(value);
 
     }
+
+    private static Double round(Double value, int digit){
+        double pow = Math.pow(10,digit);
+        if(null==value){
+            return Double.NaN;
+        }
+        return (double)Math.round(value*pow)/pow;
+    }
+
 
     /**
      * 既読状況の判断
