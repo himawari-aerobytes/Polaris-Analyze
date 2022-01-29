@@ -1,6 +1,8 @@
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Data;
 
+@Data
 @JsonPropertyOrder({
         "name",
         "number",
@@ -13,24 +15,11 @@ public class Member {
     private String grade;
     @JsonProperty("number")
     private String number;
-    private Counter counter;
+    Counter counter = new Counter();
 
-
-
-    public String getName() {
-        return name;
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public Counter getCounter() {
-        return counter;
+    @Override
+    public String toString(){
+        return grade+name;
     }
 
     /**
@@ -40,32 +29,14 @@ public class Member {
      * @param grade 学年(統一されていれば何でもoK)
      */
     public Member(String name, String number, String grade){
+        this.counter = new Counter();
         this.name = name;
         this.grade = grade;
         this.number = number;
-        this.counter = new Counter();
 
     }
 
     public Member(){}
-
-    @Override
-    public String toString(){
-        return grade+name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public void setGrade(String grade){
-        this.grade = grade;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
 
 
 

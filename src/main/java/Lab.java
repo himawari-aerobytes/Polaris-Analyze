@@ -50,5 +50,26 @@ public class Lab {
         return (double) percentage / 10000 *100;
     }
 
+    public double calcAllPercentage(){
+        int allRead = 0;
+        int allReceive = 0;
+
+        System.out.println("--- 既読率 - "+"全員"+" ---");
+
+        for (Member member : members) {
+            allReceive += member.getCounter().getAllReceived();
+            allRead += member.getCounter().getAllRead();
+            System.out.println(member.getName()+"::"+member.getCounter().getAllRead()+"||"+member.getCounter().getAllReceived()+"--"+member.getCounter().getSend());
+
+
+        }
+
+        int percentage =(int) ((double) allRead / allReceive*10000);
+        System.out.println("全員" + "|"+allRead+"|"+allReceive);
+        return (double) percentage / 10000 *100;
+    }
+
+
+
 
 }
