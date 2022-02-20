@@ -130,9 +130,10 @@
                 readChart("canvas[[${msg.id}]]",[[ ${msg.graph.value} ]],ReadLabels);
                 /*]]>*/
             </script>
-            <span th:each="reader : ${msg.response_body}">
+            <th:block th:each="reader : ${msg.response_body}">
                 <p th:text="${reader}"></p>
-            </span>
+            </th:block>
+
         </div>
 
         <p class="text-right text-black-50" th:text="${msg.createdDate}"></p>
