@@ -5,6 +5,7 @@ import analyzer.Utility.Graph;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Data
 //アノテーションでcsvの順序とキー名を対応させています
 @JsonPropertyOrder({
         "登録日時",
@@ -122,148 +124,11 @@ public class Message {
         return this.extensions;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    //以下，自動生成
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setHeadline(String headline) {
-        this.headline = headline;
-    }
-
-    public void setAPNsSend(String APNsSend) {
-        this.APNsSend = APNsSend;
-    }
-
-    public void setAPNsSuccess(String APNsSuccess) {
-        this.APNsSuccess = APNsSuccess;
-    }
-
-    public void setAPNsFail(String APNsFail) {
-        this.APNsFail = APNsFail;
-    }
-
-    public void setGCMSend(String GCMSend) {
-        this.GCMSend = GCMSend;
-    }
-
-    public void setGCMSuccess(String GCMSuccess) {
-        this.GCMSuccess = GCMSuccess;
-    }
-
-    public void setGCMFail(String GCMFail) {
-        this.GCMFail = GCMFail;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public void setRoot_push_id(String root_push_id) {
-        this.root_push_id = root_push_id;
-    }
-
-
-
-    public String getCreatedDate() {
-        return createdDate;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getHeadline() {
-        return headline;
-    }
-
-    public String getAPNsSend() {
-        return APNsSend;
-    }
-
-    public String getAPNsSuccess() {
-        return APNsSuccess;
-    }
-
-    public String getAPNsFail() {
-        return APNsFail;
-    }
-
-    public String getGCMSend() {
-        return GCMSend;
-    }
-
-    public String getGCMSuccess() {
-        return GCMSuccess;
-    }
-
-    public String getGCMFail() {
-        return GCMFail;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public String getRoot_push_id() {
-        return root_push_id;
-    }
-
-    public List<ReadCondition> getReadCondition() {
-        return readCondition;
-    }
-
-    public void setReadCondition(List<ReadCondition> readCondition) {
-        this.readCondition = readCondition;
-    }
-
-    public Double getReadRatio() {
-        return readRatio;
-    }
-
-    public void setReadRatio(Double readRatio) {
-        this.readRatio = readRatio;
-    }
-
-    public List<String> getResponse_body() {
-        return response_body;
-    }
-
-    public void setResponse_body(List<String> response_body) {
-        this.response_body = response_body;
-    }
 
     public void addResponse_body(String response_body){
         this.response_body.add(response_body);
     }
 
-    public Graph<String, Integer> getGraph() {
-        return graph;
-    }
-
-    public void setGraph(Graph<String, Integer> graph) {
-        this.graph = graph;
-    }
 
     public void addGraphValue(int val){
         this.graph.addValue(val);
